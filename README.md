@@ -131,3 +131,158 @@ http://127.0.0.1:8000/admin/
 ```
 
 ---
+
+## Domain Model
+
+The regulatory data model is centered around `HuntingSeason`.
+
+A hunting season connects a species with the land type, hunting zone or Wildlife Management Area, season type, harvest category, optional Deer Management Unit, source, legal methods, permits, and one or more date periods.
+
+### Main domain classes
+
+- `Species`
+- `HuntingZone`
+- `DeerManagementUnit`
+- `LandType`
+- `SeasonType`
+- `HarvestCategory`
+- `Source`
+- `WildlifeManagementArea`
+- `LicensePermit`
+- `LegalMethod`
+- `HuntingSeason`
+- `SeasonPeriod`
+
+---
+
+## Class Diagram
+
+GitHub supports Mermaid diagrams directly inside Markdown files, so the following diagram should render automatically when this README is displayed on GitHub.
+
+```mermaid
+classDiagram
+    direction LR
+
+    class Species {
+        +id
+        +common_name
+        +scientific_name
+        +description
+        +habitat
+        +behavior
+        +hunting_strategy
+        +image_url
+        +is_active
+    }
+
+    class HuntingZone {
+        +id
+        +name
+        +code
+        +description
+        +map_url
+    }
+
+    class DeerManagementUnit {
+        +id
+        +code
+        +description
+    }
+
+    class LandType {
+        +id
+        +name
+        +description
+    }
+
+    class SeasonType {
+        +id
+        +name
+        +code
+        +description
+        +sort_order
+    }
+
+    class HarvestCategory {
+        +id
+        +name
+        +description
+    }
+
+    class Source {
+        +id
+        +organization
+        +title
+        +url
+        +document_type
+        +effective_date
+        +retrieved_at
+        +last_verified_at
+        +notes
+    }
+
+    class WildlifeManagementArea {
+        +id
+        +name
+        +county
+        +region
+        +latitude
+        +longitude
+        +acreage
+        +description
+        +brochure_url
+        +map_url
+        +is_active
+    }
+
+    class LicensePermit {
+        +id
+        +name
+        +permit_type
+        +description
+        +requirements
+        +is_active
+    }
+
+    class LegalMethod {
+        +id
+        +name
+        +description
+    }
+
+    class HuntingSeason {
+        +id
+        +season_year
+        +daily_bag_limit
+        +possession_limit
+        +annual_limit
+        +notes
+        +is_active
+    }
+
+    class SeasonPeriod {
+        +id
+        +start_date
+        +end_date
+        +notes
+    }
+
+    HuntingZone "1" --> "0..*" DeerManagementUnit : contains
+
+    Species "1" --> "0..*" HuntingSeason : species
+    LandType "1" --> "0..*" HuntingSeason : land type
+    HuntingZone "0..1" --> "0..*" HuntingSeason : zone
+    DeerManagementUnit "0..1" --> "0..*" HuntingSeason : DMU
+    WildlifeManagementArea "0..1" --> "0..*" HuntingSeason : WMA
+    SeasonType "1" --> "0..*" HuntingSeason : season type
+    HarvestCategory "0..1" --> "0..*" HuntingSeason : harvest category
+    Source "1" --> "0..*" HuntingSeason : source
+
+    HuntingSeason "1" *-- "0..*" SeasonPeriod : periods
+    HuntingSeason "0..*" -- "0..*" LicensePermit : permits
+    HuntingSeason "0..*" -- "0..*" LegalMethod : legal methods
+
+    Source "0..1" --> "0..*" LicensePermit : source
+```
+
+---
