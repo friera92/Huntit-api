@@ -39,6 +39,27 @@ class LandType(models.Model):
     def __str__(self):
         return self.name
 
+class RegulatoryArea(models.Model):
+    code = models.CharField(
+        max_length=50,
+        unique=True,
+    )
+
+    name = models.CharField(
+        max_length=150,
+    )
+
+    description = models.TextField(
+        blank=True,
+    )
+
+    map_url = models.URLField(
+        blank=True,
+    )
+
+    def __str__(self):
+        return self.name
+
 
 class SeasonType(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -172,6 +193,14 @@ class HuntingSeason(models.Model):
         related_name="hunting_seasons",
     )
 
+    regulatory_area = models.ForeignKey(
+        RegulatoryArea,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="hunting_seasons",
+    )
+
     zone = models.ForeignKey(
         HuntingZone,
         on_delete=models.PROTECT,
@@ -273,3 +302,158 @@ class SeasonPeriod(models.Model):
 
     def __str__(self):
         return f"{self.start_date} - {self.end_date}"
+
+class BagLimitRule(models.Model):
+    LIMIT_TYPE_CHOICES = [
+        ("GENERAL", "General"),
+        ("DAILY", "Daily"),
+        ("POSSESSION", "Possession"),
+        ("SEASON", "Season"),
+        ("ANNUAL", "Annual"),
+    ]
+
+    species = models.ForeignKey(
+        Species,
+        on_delete=models.CASCADE,
+        related_name="bag_limit_rules",
+    )
+
+    land_type = models.ForeignKey(
+        LandType,
+        on_delete=models.PROTECT,
+        related_name="bag_limit_rules",
+    )
+
+    zone = models.ForeignKey(
+        HuntingZone,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bag_limit_rules",
+    )
+
+    regulatory_area = models.ForeignKey(
+        RegulatoryArea,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bag_limit_rules",
+    )
+
+    dmu = models.ForeignKey(
+        DeerManagementUnit,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bag_limit_rules",
+    )
+
+    season_type = models.ForeignKey(
+        SeasonType,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bag_limit_rules",
+    )
+
+    season_year = models.CharField(
+        max_length=9
+    )
+
+    season_group = models.CharField(
+        max_length=50,
+        blank=True,
+        default="",
+    )
+
+    limit_type = models.CharField(
+        max_length=20,
+        choices=LIMIT_TYPE_CHOICES,
+    )
+
+    harvest_category = models.ForeignKey(
+        HarvestCategory,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bag_limit_rules",
+    )
+
+    limit = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+    )
+
+    is_unlimited = models.BooleanField(
+        default=False,
+    )
+
+    conditions = models.TextField(
+        blank=True
+    )
+
+    source = models.ForeignKey(
+        Source,
+        on_delete=models.PROTECT,
+        related_name="bag_limit_rules",
+    )
+
+    is_active = models.BooleanField(
+        default=True
+    )
+
+    def __str__(self):
+        category = (
+            self.harvest_category.name
+            if self.harvest_category
+            else "All"
+        )
+        return (
+            f"{self.species} - "
+            f"{self.limit_type} - "
+            f"{category} - "
+            f"{self.limit}"
+        )
+
+class RegulationNote(models.Model):
+    species = models.ForeignKey(
+        Species,
+        on_delete=models.CASCADE,
+        related_name="regulation_notes",
+    )
+
+    land_type = models.ForeignKey(
+        LandType,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="regulation_notes",
+    )
+
+    season_year = models.CharField(
+        max_length=9,
+        blank=True,
+    )
+
+    title = models.CharField(
+        max_length=150,
+        blank=True,
+    )
+
+    text = models.TextField()
+
+    source = models.ForeignKey(
+        Source,
+        on_delete=models.PROTECT,
+        related_name="regulation_notes",
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+    )
+
+    def __str__(self):
+        return (
+            f"{self.species} - "
+            f"{self.title or 'Regulation Note'}"
+        )

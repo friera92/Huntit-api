@@ -1,24 +1,41 @@
+from dataclasses import dataclass
+from datetime import datetime, timezone
+
 import requests
 
+from .sources import FWCSource, get_source
 
-BASE_URL = "https://myfwc.com"
 
-SEASON_DATES_URL = f"{BASE_URL}/hunting/season-dates/"
+@dataclass
+class FWCFetchResult:
+    source: FWCSource
+    html: str
+    retrieved_at: datetime
 
 
 class FWCClient:
     def __init__(self, timeout=30):
         self.timeout = timeout
 
-    def get_season_dates_page(self):
+        self.headers = {
+            "User-Agent": "HuntIt/1.0"
+        }
+
+    def fetch(self, source_key):
+        source = get_source(source_key)
+
         response = requests.get(
-            SEASON_DATES_URL,
+            source.url,
             timeout=self.timeout,
-            headers={
-                "User-Agent": "HuntIt/1.0"
-            },
+            headers=self.headers,
         )
 
         response.raise_for_status()
 
-        return response.text
+        return FWCFetchResult(
+            source=source,
+            html=response.text,
+            retrieved_at=datetime.now(
+                timezone.utc
+            ),
+        )

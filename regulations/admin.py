@@ -1,6 +1,9 @@
 from django.contrib import admin
 
 from .models import (
+    BagLimitRule,
+    RegulationNote,
+    RegulatoryArea,
     Species,
     HuntingZone,
     LandType,
@@ -118,3 +121,6 @@ admin.site.register(Source)
 admin.site.register(LicensePermit)
 admin.site.register(LegalMethod)
 admin.site.register(HarvestCategory)
+admin.site.register(BagLimitRule)
+admin.site.register(RegulationNote)
+admin.site.register(RegulatoryArea)

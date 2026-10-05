@@ -1,105 +1,12 @@
 import re
 
-from bs4 import BeautifulSoup
+from regulations.services.fwc.parsers.parser import FWCMainParser
+from regulations.services.fwc.parsers.bag_limit import (
+    FWCBagLimitParser,
+)
 
 
-class FWCSeasonParser:
-    def __init__(self, html):
-        self.soup = BeautifulSoup(html, "html.parser")
-
-    def get_text(self):
-        return self.soup.get_text(
-            separator="\n",
-            strip=True,
-        )
-
-    def get_headings(self):
-        headings = []
-
-        for heading in self.soup.find_all(
-            ["h1", "h2", "h3", "h4", "h5"]
-        ):
-            text = heading.get_text(" ", strip=True)
-
-            if text:
-                headings.append({
-                    "level": heading.name,
-                    "text": text,
-                })
-
-        return headings
-    
-    def get_section_content(self, heading_text):
-        heading = self.soup.find(
-            lambda tag: (
-                tag.name in ["h1", "h2", "h3", "h4", "h5"]
-                and heading_text.lower()
-                in tag.get_text(" ", strip=True).lower()
-            )
-        )
-
-        if not heading:
-            return []
-
-        content = []
-
-        for element in heading.find_next_siblings():
-            if element.name in ["h1", "h2", "h3", "h4", "h5"]:
-                break
-
-            text = element.get_text(
-                " ",
-                strip=True,
-            )
-
-            if text:
-                content.append(text)
-
-        return content
-
-    def get_subsection_content(self, parent_heading_text, subsection_heading_text):
-        headings = self.soup.find_all(
-            ["h1", "h2", "h3", "h4", "h5"]
-        )
-
-        inside_parent = False
-
-        for heading in headings:
-            text = heading.get_text(
-                " ",
-                strip=True,
-            )
-
-            if parent_heading_text.lower() in text.lower():
-                inside_parent = True
-                continue
-
-            if inside_parent:
-                if subsection_heading_text.lower() == text.lower():
-                    content = []
-
-                    for element in heading.find_next_siblings():
-                        if element.name in [
-                            "h1",
-                            "h2",
-                            "h3",
-                            "h4",
-                            "h5",
-                        ]:
-                            break
-
-                        value = element.get_text(
-                            " ",
-                            strip=True,
-                        )
-
-                        if value:
-                            content.append(value)
-
-                    return content
-
-        return []
-
+class FWCDeerParser(FWCMainParser):
     def parse_seasons(self, text):
         season_pattern = re.compile(
             r"("
@@ -160,7 +67,7 @@ class FWCSeasonParser:
             "seasons": seasons,
         }
     
-    def parse_antlerless_zone(self, zone, season_year,):
+    def parse_antlerless_zone(self, zone, season_year):
         content = self.get_subsection_content(
             "ANTLERLESS DEER",
             f"Zone {zone}",
@@ -178,13 +85,13 @@ class FWCSeasonParser:
         parsed_seasons = []
 
         for season in seasons:
-            dmu_periods = self._parse_dmu_periods(
+            rules = self._parse_dmu_rules(
                 season["date_text"]
             )
 
             parsed_seasons.append({
                 "season_type": season["season_type"],
-                "dmu_periods": dmu_periods,
+                "rules": rules,
             })
 
         return {
@@ -195,16 +102,31 @@ class FWCSeasonParser:
             "seasons": parsed_seasons,
         }
 
-    def _parse_dmu_periods(self, text):
-        # Remove FWC footnote markers.
-        text = re.sub(r"\(\d+\)", "", text).strip()
+    def _parse_dmu_rules(self, text):
+        text = re.sub(
+            r"\(\d+\)",
+            "",
+            text,
+        ).strip()
+
+        # If no DMU appears, the rule applies at zone level.
+        if not re.search(
+            r"\bDMU\b",
+            text,
+            re.IGNORECASE,
+        ):
+            return [
+                {
+                    "dmu": None,
+                    "date_text": text,
+                }
+            ]
 
         results = []
 
         # Handle:
         #
         # DMU A2 and DMU A3 : Sept. 12-13
-        #
         combined_pattern = re.compile(
             r"DMU\s+([A-Z]\d+)"
             r"\s+and\s+"
@@ -214,7 +136,9 @@ class FWCSeasonParser:
             re.IGNORECASE,
         )
 
-        combined_match = combined_pattern.fullmatch(text)
+        combined_match = combined_pattern.fullmatch(
+            text
+        )
 
         if combined_match:
             first_dmu = combined_match.group(1).upper()
@@ -234,7 +158,10 @@ class FWCSeasonParser:
 
         # Handle:
         #
-        # DMU A2 : Aug. 1-9 DMU A3 : Aug. 1-16
+        # DMU C1 : Nov. 21-29
+        # DMU C2 : Nov. 21-29
+        # DMU C3 : Nov. 21-29
+        # ...
 
         pattern = re.compile(
             r"DMU\s+([A-Z]\d+)\s*:\s*"
@@ -250,3 +177,80 @@ class FWCSeasonParser:
             })
 
         return results
+
+    def parse_bag_limits(self):
+        content = self.get_exact_section_content(
+            "Bag Limit"
+        )
+
+        if not content:
+            raise ValueError(
+                "No deer bag limit data found."
+            )
+
+        text = " ".join(content)
+
+        bag_parser = FWCBagLimitParser()
+
+        rules = bag_parser.parse_standard_limits(
+            text
+        )
+
+        # Add the fields required by the common
+        # HuntIt representation.
+        for rule in rules:
+            rule["harvest_category"] = None
+            rule["dmu"] = None
+
+        # Deer-specific rule:
+        # only 2 of the annual limit may be antlerless.
+        antlerless_match = re.search(
+            r"only\s+(\d+)\s+can be antlerless",
+            text,
+            re.IGNORECASE,
+        )
+
+        if antlerless_match:
+            rules.append({
+                "limit_type": "ANNUAL",
+                "limit": int(
+                    antlerless_match.group(1)
+                ),
+                "is_unlimited": False,
+                "harvest_category": "Antlerless",
+                "dmu": None,
+                "conditions": (
+                    "Maximum antlerless deer within "
+                    "the annual deer bag limit."
+                ),
+            })
+
+        # Deer-specific DMU D2 exception.
+        dmu_match = re.search(
+            r"in\s+DMU\s+([A-Z]\d+),\s*"
+            r"(\d+)\s+of\s+the\s+(\d+)\s+deer\s+"
+            r"may\s+be\s+antlerless",
+            text,
+            re.IGNORECASE,
+        )
+
+        if dmu_match:
+            rules.append({
+                "limit_type": "ANNUAL",
+                "limit": int(
+                    dmu_match.group(2)
+                ),
+                "is_unlimited": False,
+                "harvest_category": "Antlerless",
+                "dmu": dmu_match.group(1).upper(),
+                "conditions": (
+                    "DMU-specific exception to the "
+                    "general annual antlerless limit."
+                ),
+            })
+
+        return {
+            "species": "White Tailed Deer",
+            "rules": rules,
+            "note": bag_parser.extract_note(text),
+        }

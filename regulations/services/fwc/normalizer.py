@@ -5,7 +5,9 @@ MONTHS = {
     "jan": 1,
     "feb": 2,
     "mar": 3,
+    "march": 3,
     "apr": 4,
+    "april": 4,
     "may": 5,
     "jun": 6,
     "jul": 7,
@@ -24,6 +26,11 @@ SEASON_TYPE_MAP = {
     "general gun season": "GENERAL_GUN",
     "youth deer hunt weekend": "YOUTH_DEER",
     "trapping season": "TRAPPING",
+    "fall turkey season": "FALL_TURKEY",
+    "youth turkey hunt": "YOUTH_TURKEY",
+    "spring turkey season": "SPRING_TURKEY",
+    "year-round": "YEAR_ROUND",
+    "year round": "YEAR_ROUND",
 }
 
 
@@ -61,7 +68,7 @@ def normalize_season_type(value):
             f"Unknown FWC season type: {value}"
         )
 
-def normalize_periods(value, season_year):
+def normalize_periods(value, season_year, initial_year=None):
     """
     Convert FWC date ranges into Python date objects.
 
@@ -69,6 +76,7 @@ def normalize_periods(value, season_year):
         Aug. 1-30
         Aug. 1 – Sept. 4
         Sept. 19 – Oct. 18, Nov. 21 – Jan. 3
+        Dec. 5-11, Feb. 22 – 28
 
     season_year:
         2026-2027
@@ -76,10 +84,10 @@ def normalize_periods(value, season_year):
 
     value = normalize_whitespace(value)
 
-    # Remove FWC footnote markers such as "(1)"
+    # Remove FWC footnotes such as "(1)"
     value = re.sub(r"\(\d+\)", "", value).strip()
 
-    # Normalize the different dash characters used by FWC.
+    # Normalize dash characters.
     value = (
         value
         .replace("–", "-")
@@ -87,7 +95,7 @@ def normalize_periods(value, season_year):
     )
 
     try:
-        start_year, end_year = map(
+        first_year, second_year = map(
             int,
             season_year.split("-"),
         )
@@ -96,7 +104,20 @@ def normalize_periods(value, season_year):
             f"Invalid season year: {season_year}"
         )
 
+    if initial_year is None:
+        current_year = first_year
+    else:
+        if initial_year not in {first_year, second_year}:
+            raise ValueError(
+                f"{initial_year} is outside "
+                f"season {season_year}"
+            )
+    
+        current_year = initial_year
+
     periods = []
+
+    previous_start_month = None
 
     for period_text in value.split(","):
         period_text = period_text.strip()
@@ -104,10 +125,52 @@ def normalize_periods(value, season_year):
         if not period_text:
             continue
 
-        start_date, end_date = _parse_period(
-            period_text,
-            start_year,
-            end_year,
+        start_month, start_day, end_month, end_day = (
+            _parse_period_parts(period_text)
+        )
+
+        # Example:
+        #
+        # Dec. 5-11, Feb. 22-28
+        #
+        # The month goes from 12 -> 2,
+        # so the second period belongs to the next year.
+        if (
+            previous_start_month is not None
+            and start_month < previous_start_month
+        ):
+            current_year += 1
+
+            if current_year > second_year:
+                raise ValueError(
+                    f"Date range exceeds season "
+                    f"{season_year}"
+                )
+
+        start_date = date(
+            current_year,
+            start_month,
+            start_day,
+        )
+
+        # A single period may itself cross the year:
+        #
+        # Dec. 26 - Jan. 3
+        if end_month < start_month:
+            end_date_year = current_year + 1
+        else:
+            end_date_year = current_year
+
+        if end_date_year > second_year:
+            raise ValueError(
+                f"Date range exceeds season "
+                f"{season_year}"
+            )
+        
+        end_date = date(
+            end_date_year,
+            end_month,
+            end_day,
         )
 
         periods.append({
@@ -115,11 +178,16 @@ def normalize_periods(value, season_year):
             "end_date": end_date,
         })
 
+        previous_start_month = start_month
+
     return periods
 
 
-def _parse_period(value, start_year, end_year):
-    parts = re.split(r"\s*-\s*", value)
+def _parse_period_parts(value):
+    parts = re.split(
+        r"\s*-\s*",
+        value,
+    )
 
     if len(parts) != 2:
         raise ValueError(
@@ -132,9 +200,15 @@ def _parse_period(value, start_year, end_year):
         start_text
     )
 
-    # "Aug. 1-30"
-    # The end date doesn't repeat the month.
-    if re.fullmatch(r"\d{1,2}", end_text.strip()):
+    # Example:
+    #
+    # Aug. 1-30
+    #
+    # The end date does not repeat the month.
+    if re.fullmatch(
+        r"\d{1,2}",
+        end_text.strip(),
+    ):
         end_month = start_month
         end_day = int(end_text.strip())
 
@@ -143,30 +217,12 @@ def _parse_period(value, start_year, end_year):
             end_text
         )
 
-    start_date = date(
-        start_year,
+    return (
         start_month,
         start_day,
-    )
-
-    # Example:
-    #
-    # Nov. 21 - Jan. 3
-    #
-    # January belongs to the second year of
-    # the hunting season.
-    if end_month < start_month:
-        period_end_year = end_year
-    else:
-        period_end_year = start_year
-
-    end_date = date(
-        period_end_year,
         end_month,
         end_day,
     )
-
-    return start_date, end_date
 
 
 def _parse_month_day(value):
@@ -182,6 +238,8 @@ def _parse_month_day(value):
 
     month_name = match.group(1).lower()
     day = int(match.group(2))
+
+    print(f"Month: {month_name}, Day: {day}")
 
     try:
         month = MONTHS[month_name]
