@@ -348,6 +348,12 @@ classDiagram
         +description
     }
 
+    class LandType {
+        +id
+        +name
+        +description
+    }
+
     class RegulatoryArea {
         +id
         +code
@@ -369,12 +375,6 @@ classDiagram
         +brochure_url
         +map_url
         +is_active
-    }
-
-    class LandType {
-        +id
-        +name
-        +description
     }
 
     class SeasonType {
@@ -454,35 +454,60 @@ classDiagram
         +is_active
     }
 
+    %% -------------------------------------------------
+    %% Geographic / reference relationships
+    %% -------------------------------------------------
+
     HuntingZone "1" --> "0..*" DeerManagementUnit : contains
+
+    %% -------------------------------------------------
+    %% HuntingSeason relationships
+    %% -------------------------------------------------
 
     Species "1" --> "0..*" HuntingSeason : species
     LandType "1" --> "0..*" HuntingSeason : land type
+
     HuntingZone "0..1" --> "0..*" HuntingSeason : zone
-    DeerManagementUnit "0..1" --> "0..*" HuntingSeason : DMU
     RegulatoryArea "0..1" --> "0..*" HuntingSeason : regulatory area
     ManagedArea "0..1" --> "0..*" HuntingSeason : managed area
+    DeerManagementUnit "0..1" --> "0..*" HuntingSeason : DMU
+
     SeasonType "1" --> "0..*" HuntingSeason : season type
     HarvestCategory "0..1" --> "0..*" HuntingSeason : harvest category
     Source "1" --> "0..*" HuntingSeason : source
 
     HuntingSeason "1" *-- "0..*" SeasonPeriod : periods
+
     HuntingSeason "0..*" -- "0..*" LicensePermit : permits
     HuntingSeason "0..*" -- "0..*" LegalMethod : legal methods
 
+    %% -------------------------------------------------
+    %% BagLimitRule relationships
+    %% -------------------------------------------------
+
     Species "1" --> "0..*" BagLimitRule : species
     LandType "1" --> "0..*" BagLimitRule : land type
+
     HuntingZone "0..1" --> "0..*" BagLimitRule : zone
-    DeerManagementUnit "0..1" --> "0..*" BagLimitRule : DMU
     RegulatoryArea "0..1" --> "0..*" BagLimitRule : regulatory area
     ManagedArea "0..1" --> "0..*" BagLimitRule : managed area
+    DeerManagementUnit "0..1" --> "0..*" BagLimitRule : DMU
+
     SeasonType "0..1" --> "0..*" BagLimitRule : season type
     HarvestCategory "0..1" --> "0..*" BagLimitRule : harvest category
     Source "1" --> "0..*" BagLimitRule : source
 
+    %% -------------------------------------------------
+    %% RegulationNote relationships
+    %% -------------------------------------------------
+
     Species "1" --> "0..*" RegulationNote : species
     LandType "0..1" --> "0..*" RegulationNote : land type
     Source "1" --> "0..*" RegulationNote : source
+
+    %% -------------------------------------------------
+    %% License / Source relationships
+    %% -------------------------------------------------
 
     Source "0..1" --> "0..*" LicensePermit : source
 ```
