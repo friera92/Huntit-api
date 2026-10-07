@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import (
     BagLimitRule,
+    ManagedArea,
     RegulationNote,
     RegulatoryArea,
     Species,
@@ -9,7 +10,6 @@ from .models import (
     LandType,
     SeasonType,
     Source,
-    WildlifeManagementArea,
     LicensePermit,
     LegalMethod,
     HuntingSeason,
@@ -45,8 +45,8 @@ class HuntingZoneAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(WildlifeManagementArea)
-class WildlifeManagementAreaAdmin(admin.ModelAdmin):
+@admin.register(ManagedArea)
+class ManagedAreaAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "county",
@@ -78,7 +78,7 @@ class HuntingSeasonAdmin(admin.ModelAdmin):
         "season_year",
         "land_type",
         "zone",
-        "wma",
+        "managed_area",
         "is_active",
     )
 
@@ -87,6 +87,7 @@ class HuntingSeasonAdmin(admin.ModelAdmin):
         "season_type",
         "land_type",
         "zone",
+        "managed_area",
         "is_active",
     )
 

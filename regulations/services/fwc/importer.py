@@ -13,7 +13,8 @@ from regulations.models import (
     BagLimitRule,
     RegulationNote,
     RegulatoryArea,
-    LegalMethod
+    LegalMethod,
+    ManagedArea,
 )
 
 from .normalizer import (
@@ -99,7 +100,7 @@ class FWCImporter:
                 land_type=land_type,
                 zone=zone,
                 dmu=None,
-                wma=None,
+                managed_area=None,
                 season_type=season_type,
                 season_year=season_year,
                 defaults={
@@ -223,7 +224,7 @@ class FWCImporter:
                         land_type=land_type,
                         zone=zone,
                         dmu=dmu,
-                        wma=None,
+                        managed_area=None,
                         season_type=season_type,
                         season_year=data["season_year"],
                         defaults={
@@ -263,17 +264,13 @@ class FWCImporter:
         return results
 
     @transaction.atomic
-    def import_deer_bag_limits(self, data, source_title, season_year):
+    def import_deer_bag_limits(self, data, source, season_year):
         species = Species.objects.get(
             common_name=data["species"]
         )
 
         land_type = LandType.objects.get(
             name="Private Land"
-        )
-
-        source = Source.objects.get(            
-            title=source_title
         )
 
         note_result = None
@@ -319,6 +316,8 @@ class FWCImporter:
                     species=species,
                     land_type=land_type,
                     zone=zone,
+                    managed_area=None,
+                    regulatory_area=None,
                     dmu=dmu,
                     season_type=None,
                     season_year=season_year,
@@ -370,7 +369,7 @@ class FWCImporter:
         return note, created
 
     @transaction.atomic
-    def import_turkey_seasons(self, data, source_title):
+    def import_turkey_seasons(self, data, source):
         species = Species.objects.get(
             common_name=data["species"]
         )
@@ -381,10 +380,6 @@ class FWCImporter:
 
         land_type = LandType.objects.get(
             name="Private Land"
-        )
-
-        source = Source.objects.get(            
-            title=source_title
         )
 
         zone = None
@@ -423,7 +418,7 @@ class FWCImporter:
                     zone=zone,
                     regulatory_area=regulatory_area,
                     dmu=None,
-                    wma=None,
+                    managed_area=None,
                     season_type=season_type,
                     season_year=data["season_year"],
                     defaults={
@@ -463,17 +458,13 @@ class FWCImporter:
         return results
 
     @transaction.atomic
-    def import_turkey_bag_limits(self, data, source_title, season_year):
+    def import_turkey_bag_limits(self, data, source, season_year):
         species = Species.objects.get(
             common_name=data["species"]
         )
 
         land_type = LandType.objects.get(
             name="Private Land"
-        )
-
-        source = Source.objects.get(            
-            title=source_title
         )
 
         results = []
@@ -491,6 +482,7 @@ class FWCImporter:
                     land_type=land_type,
                     zone=None,
                     regulatory_area=None,
+                    managed_area=None,
                     dmu=None,
                     season_type=None,
                     season_year=season_year,
@@ -556,7 +548,7 @@ class FWCImporter:
                 zone=None,
                 regulatory_area=None,
                 dmu=None,
-                wma=None,
+                managed_area=None,
                 season_type=season_type,
                 season_year=data["season_year"],
                 defaults={
@@ -595,6 +587,7 @@ class FWCImporter:
                 land_type=land_type,
                 zone=None,
                 regulatory_area=None,
+                managed_area=None,
                 dmu=None,
                 season_type=season_type,
                 season_year=data["season_year"],
@@ -667,6 +660,235 @@ class FWCImporter:
             "created": created,
         }
 
+    @transaction.atomic
+    def import_burmese_python_private_land(self, data, source):
+        species = Species.objects.get(
+            common_name=data["species"]
+        )
+
+        land_type = LandType.objects.get(
+            name=data["land_type"]
+        )
+
+        season_code = normalize_season_type(
+            data["season_type"]
+        )
+
+        season_type = SeasonType.objects.get(
+            code=season_code
+        )
+
+        hunting_season, season_created = (
+            HuntingSeason.objects.get_or_create(
+                species=species,
+                harvest_category=None,
+                land_type=land_type,
+                zone=None,
+                regulatory_area=None,
+                managed_area=None,
+                dmu=None,
+                season_type=season_type,
+                season_year=data["season_year"],
+                defaults={
+                    "source": source,
+                    "is_active": True,
+                },
+            )
+        )
+
+        changed = False
+
+        if hunting_season.source_id != source.id:
+            hunting_season.source = source
+            changed = True
+
+        if not hunting_season.is_active:
+            hunting_season.is_active = True
+            changed = True
+
+        if changed:
+            hunting_season.save()
+
+        bag_data = data["bag_limit"]
+
+        bag_rule, bag_created = (
+            BagLimitRule.objects.update_or_create(
+                species=species,
+                land_type=land_type,
+                zone=None,
+                regulatory_area=None,
+                managed_area=None,
+                dmu=None,
+                season_type=season_type,
+                season_year=data["season_year"],
+                season_group="",
+                limit_type=bag_data["limit_type"],
+                harvest_category=None,
+                defaults={
+                    "limit": bag_data["limit"],
+                    "is_unlimited": bag_data[
+                        "is_unlimited"
+                    ],
+                    "conditions": bag_data[
+                        "conditions"
+                    ],
+                    "source": source,
+                    "is_active": True,
+                },
+            )
+        )
+
+        note_data = data["note"]
+
+        note, note_created = (
+            self.import_regulation_note(
+                species=species,
+                land_type=land_type,
+                season_year=data["season_year"],
+                title=note_data["title"],
+                text=note_data["text"],
+                source=source,
+            )
+        )
+
+        if self.dry_run:
+            transaction.set_rollback(True)
+
+        return {
+            "season": {
+                "object": hunting_season,
+                "created": season_created,
+            },
+            "bag_limit": {
+                "object": bag_rule,
+                "created": bag_created,
+            },
+            "note": {
+                "object": note,
+                "created": note_created,
+            },
+        }
+    
+    @transaction.atomic
+    def import_burmese_python_managed_land(self, data, source):
+        species = Species.objects.get(
+            common_name=data["species"]
+        )
+
+        land_type, _ = LandType.objects.get_or_create(
+            name=data["land_type"]
+        )
+
+        season_code = normalize_season_type(
+            data["season_type"]
+        )
+
+        season_type = SeasonType.objects.get(
+            code=season_code
+        )
+
+        season_results = []
+
+        for area_data in data["managed_areas"]:
+            managed_area = (
+                self._sync_managed_area(
+                    area_data
+                )
+            )
+
+            hunting_season, created = (
+                HuntingSeason.objects.get_or_create(
+                    species=species,
+                    harvest_category=None,
+                    land_type=land_type,
+                    zone=None,
+                    regulatory_area=None,
+                    managed_area=managed_area,
+                    dmu=None,
+                    season_type=season_type,
+                    season_year=data["season_year"],
+                    defaults={
+                        "source": source,
+                        "is_active": True,
+                    },
+                )
+            )
+
+            changed = False
+
+            if hunting_season.source_id != source.id:
+                hunting_season.source = source
+                changed = True
+
+            if not hunting_season.is_active:
+                hunting_season.is_active = True
+                changed = True
+
+            if changed:
+                hunting_season.save()
+
+            season_results.append({
+                "season": hunting_season,
+                "created": created,
+            })
+
+        bag_data = data["bag_limit"]
+
+        bag_rule, bag_created = (
+            BagLimitRule.objects.update_or_create(
+                species=species,
+                land_type=land_type,
+                zone=None,
+                regulatory_area=None,
+                managed_area=None,
+                dmu=None,
+                season_type=season_type,
+                season_year=data["season_year"],
+                season_group="",
+                limit_type=bag_data["limit_type"],
+                harvest_category=None,
+                defaults={
+                    "limit": bag_data["limit"],
+                    "is_unlimited": bag_data[
+                        "is_unlimited"
+                    ],
+                    "conditions": bag_data[
+                        "conditions"
+                    ],
+                    "source": source,
+                    "is_active": True,
+                },
+            )
+        )
+
+        note_data = data["note"]
+
+        note, note_created = (
+            self.import_regulation_note(
+                species=species,
+                land_type=land_type,
+                season_year=data["season_year"],
+                title=note_data["title"],
+                text=note_data["text"],
+                source=source,
+            )
+        )
+
+        if self.dry_run:
+            transaction.set_rollback(True)
+
+        return {
+            "seasons": season_results,
+            "bag_limit": {
+                "object": bag_rule,
+                "created": bag_created,
+            },
+            "note": {
+                "object": note,
+                "created": note_created,
+            },
+        }
+    
     def sync_source(self, fetch_result):
             source_info = fetch_result.source
     
@@ -710,3 +932,18 @@ class FWCImporter:
             methods.append(method)
 
         return methods
+
+    def _sync_managed_area(self, area_data,):
+        managed_area, _ = (
+            ManagedArea.objects.update_or_create(
+                name=area_data["name"],
+                defaults={
+                    "area_type": (
+                        area_data["area_type"]
+                    ),
+                    "is_active": True,
+                },
+            )
+        )
+
+        return managed_area

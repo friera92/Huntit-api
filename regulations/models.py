@@ -96,11 +96,36 @@ class Source(models.Model):
         return self.title
 
 
-class WildlifeManagementArea(models.Model):
-    name = models.CharField(max_length=150, unique=True)
+class ManagedArea(models.Model):
+    AREA_TYPE_CHOICES = [
+        ("WMA", "Wildlife Management Area"),
+        ("WEA", "Wildlife and Environmental Area"),
+        ("PSGHA", "Public Small Game Hunting Area"),
+        ("SGA", "Small Game Area"),
+        ("NWR", "National Wildlife Refuge"),
+        ("OTHER", "Other"),
+    ]
 
-    county = models.CharField(max_length=100, blank=True)
-    region = models.CharField(max_length=100, blank=True)
+    name = models.CharField(
+        max_length=200,
+        unique=True,
+    )
+
+    area_type = models.CharField(
+        max_length=20,
+        choices=AREA_TYPE_CHOICES,
+        default="OTHER",
+    )
+
+    county = models.CharField(
+        max_length=100,
+        blank=True,
+    )
+
+    region = models.CharField(
+        max_length=100,
+        blank=True,
+    )
 
     latitude = models.DecimalField(
         max_digits=9,
@@ -116,13 +141,28 @@ class WildlifeManagementArea(models.Model):
         blank=True,
     )
 
-    acreage = models.PositiveIntegerField(null=True, blank=True)
+    acreage = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
 
-    description = models.TextField(blank=True)
-    brochure_url = models.URLField(blank=True)
-    map_url = models.URLField(blank=True)
+    description = models.TextField(
+        blank=True,
+    )
 
-    is_active = models.BooleanField(default=True)
+    brochure_url = models.URLField(
+        blank=True,
+    )
+
+    map_url = models.URLField(
+        blank=True,
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+    )
 
     def __str__(self):
         return self.name
@@ -209,8 +249,8 @@ class HuntingSeason(models.Model):
         related_name="hunting_seasons",
     )
 
-    wma = models.ForeignKey(
-        WildlifeManagementArea,
+    managed_area = models.ForeignKey(
+        ManagedArea,
         on_delete=models.PROTECT,
         null=True,
         blank=True,
@@ -334,6 +374,14 @@ class BagLimitRule(models.Model):
 
     regulatory_area = models.ForeignKey(
         RegulatoryArea,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="bag_limit_rules",
+    )
+
+    managed_area = models.ForeignKey(
+        ManagedArea,
         on_delete=models.PROTECT,
         null=True,
         blank=True,

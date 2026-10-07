@@ -1,32 +1,52 @@
-from django.core.management.base import BaseCommand
-from django.test import html
+from django.core.management.base import (
+    BaseCommand,
+    CommandError,
+)
+from django.db import transaction
 
-from regulations.models import Source
-from regulations.services.fwc.client import FWCClient
+from regulations.services.fwc.client import (
+    FWCClient,
+)
+from regulations.services.fwc.importer import (
+    FWCImporter,
+)
+
 from regulations.services.fwc.parsers.deer import (
     FWCDeerParser,
 )
-
 from regulations.services.fwc.parsers.turkey import (
     FWCTurkeyParser,
 )
-
 from regulations.services.fwc.parsers.wild_hog import (
     FWCWildHogParser,
 )
-
-from regulations.services.fwc.normalizer import (
-    normalize_periods,
-    normalize_season_type,
+from regulations.services.fwc.parsers.python import (
+    FWCBurmesePythonParser,
 )
 
-from regulations.services.fwc.importer import FWCImporter
 
-from regulations.services.fwc.sources import (
-    get_source_keys,
+IMPORTABLE_SOURCES = (
+    "season_dates",
+    "wild_hog",
+    "burmese_python_removal",
 )
 
-from django.db import transaction
+ZONES = (
+    "A",
+    "B",
+    "C",
+    "D",
+)
+
+TURKEY_SPRING_AREAS = (
+    "NORTH_SR70",
+    "SOUTH_SR70",
+)
+
+TURKEY_SEASON_GROUPS = (
+    "FALL",
+    "SPRING",
+)
 
 
 class Command(BaseCommand):
@@ -35,11 +55,18 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
             "--source",
-            choices=get_source_keys(),
-            default="season_dates",
-            help="FWC source to import",
+            choices=(
+                *IMPORTABLE_SOURCES,
+                "all",
+            ),
+            default=None,
+            help=(
+                "FWC source to import. "
+                "If omitted, all supported sources "
+                "are imported."
+            ),
         )
-        
+
         parser.add_argument(
             "--season",
             default="2026-2027",
@@ -49,50 +76,329 @@ class Command(BaseCommand):
         parser.add_argument(
             "--dry-run",
             action="store_true",
-            help="Parse data without modifying the database",
+            help=(
+                "Parse and import data without "
+                "persisting database changes"
+            ),
         )
 
     def handle(self, *args, **options):
         season_year = options["season"]
-        source_key = options["source"]
+        requested_source = options["source"]
+        dry_run = options["dry_run"]
+
+        source_keys = self._resolve_sources(
+            requested_source
+        )
 
         client = FWCClient()
 
+        # Fetch everything BEFORE opening the
+        # database transaction.
+        fetch_results = {}
+
+        for source_key in source_keys:
+            fetch_results[source_key] = (
+                self._fetch_source(
+                    client,
+                    source_key,
+                )
+            )
+
+        importer = FWCImporter(
+            dry_run=dry_run
+        )
+
+        try:
+            with transaction.atomic():
+
+                for source_key in source_keys:
+                    self._import_source(
+                        source_key=source_key,
+                        fetch_result=(
+                            fetch_results[source_key]
+                        ),
+                        importer=importer,
+                        season_year=season_year,
+                    )
+
+                # Guarantees Source and all other
+                # changes are rolled back too.
+                if dry_run:
+                    transaction.set_rollback(
+                        True
+                    )
+
+        except Exception as exc:
+            raise CommandError(
+                f"FWC import failed: {exc}"
+            ) from exc
+
+        if dry_run:
+            self.stdout.write(
+                self.style.WARNING(
+                    "\nDRY RUN — all changes "
+                    "rolled back."
+                )
+            )
+        else:
+            self.stdout.write(
+                self.style.SUCCESS(
+                    "\nImport completed successfully."
+                )
+            )
+
+    def _resolve_sources(
+        self,
+        requested_source,
+    ):
+        if (
+            requested_source is None
+            or requested_source == "all"
+        ):
+            return IMPORTABLE_SOURCES
+
+        return (
+            requested_source,
+        )
+
+    def _fetch_source(
+        self,
+        client,
+        source_key,
+    ):
         self.stdout.write(
-            f"Fetching FWC source: {source_key}..."
+            f"\nFetching FWC source: "
+            f"{source_key}..."
         )
 
         fetch_result = client.fetch(
             source_key
         )
 
-        html = fetch_result.html
-
         self.stdout.write(
-            f"Source: {fetch_result.source.title}"
+            f"Source: "
+            f"{fetch_result.source.title}"
         )
 
         self.stdout.write(
             self.style.SUCCESS(
-                f"Downloaded {len(html):,} characters."
+                f"Downloaded "
+                f"{len(fetch_result.html):,} "
+                f"characters."
             )
         )
 
-        if source_key == "season_dates":
-            parser = FWCDeerParser(html)
-        elif source_key == "wild_hog":
-            parser = FWCWildHogParser(html)
-        else:
-            parser = FWCTurkeyParser(html)
+        return fetch_result
 
-        importer = FWCImporter(dry_run=options["dry_run"])
+    def _import_source(self, *, source_key, fetch_result, importer, season_year):
+        source = importer.sync_source(
+            fetch_result
+        )
 
-        source = importer.sync_source(fetch_result)
+        html = fetch_result.html
 
-        print(source)
+        handlers = {
+            "season_dates": (
+                self._import_season_dates
+            ),
+            "wild_hog": (
+                self._import_wild_hog
+            ),
+            "burmese_python_removal": (
+                self._import_burmese_python_source
+            ),
+        }
+
+        try:
+            handler = handlers[source_key]
+        except KeyError:
+            raise CommandError(
+                f"Unsupported import source: "
+                f"{source_key}"
+            )
+
+        handler(
+            html=html,
+            importer=importer,
+            source=source,
+            season_year=season_year,
+        )
+
+    def _import_season_dates(self,*, html, importer, source, season_year):
+        deer_parser = FWCDeerParser(html)       
+        turkey_parser = FWCTurkeyParser(html)
+        
+        self._import_deer(
+            parser=deer_parser,
+            importer=importer,
+            source=source,
+            season_year=season_year,
+        )
+        
+        self._import_turkey(
+            parser=turkey_parser,
+            importer=importer,
+            source=source,
+            season_year=season_year,
+        )
+
+    def _import_deer(self,*, parser, importer, source, season_year):
+        self.stdout.write(
+            "\n=== White Tailed Deer ==="
+        )
 
         self.stdout.write(
-            "\nWILD HOG — PRIVATE LAND RAW DATA\n"
+            "\nImporting Antlered Deer..."
+        )
+
+        for zone in ZONES:
+            data = parser.parse_deer_zone(
+                harvest_category="ANTLERED",
+                zone=zone,
+                season_year=season_year,
+            )
+
+            results = (
+                importer.import_deer_zone(
+                    data,
+                    source=source,
+                )
+            )
+
+            self._print_season_results(
+                results
+            )
+
+        self.stdout.write(
+            "\nImporting Antlerless Deer..."
+        )
+
+        for zone in ZONES:
+            data = (
+                parser.parse_antlerless_zone(
+                    zone=zone,
+                    season_year=season_year,
+                )
+            )
+
+            results = (
+                importer.import_antlerless_zone(
+                    data,
+                    source=source,
+                )
+            )
+
+            self._print_season_results(
+                results
+            )
+
+        self.stdout.write(
+            "\nImporting Deer Bag Limits..."
+        )
+
+        bag_data = parser.parse_bag_limits()
+
+        bag_results = (
+            importer.import_deer_bag_limits(
+                bag_data,
+                source=source,
+                season_year=season_year,
+            )
+        )
+
+        self._print_bag_results(
+            bag_results["rules"]
+        )
+
+        note_result = bag_results["note"]
+
+        if note_result:
+            self._print_note_result(
+                note_result["note"],
+                note_result["created"],
+            )
+    def _import_turkey(self,*, parser, importer, source, season_year):
+        self.stdout.write(
+            "\n=== Wild Turkey ==="
+        )
+
+        self.stdout.write(
+            "\nImporting Fall Turkey..."
+        )
+
+        for zone in ZONES:
+            data = parser.parse_fall_zone(
+                zone,
+                season_year,
+            )
+
+            results = (
+                importer.import_turkey_seasons(
+                    data,
+                    source=source,
+                )
+            )
+
+            self._print_season_results(
+                results
+            )
+
+        self.stdout.write(
+            "\nImporting Spring Turkey..."
+        )
+
+        for area_code in (
+            TURKEY_SPRING_AREAS
+        ):
+            data = (
+                parser.parse_spring_area(
+                    area_code,
+                    season_year,
+                )
+            )
+
+            results = (
+                importer.import_turkey_seasons(
+                    data,
+                    source=source,
+                )
+            )
+
+            self._print_season_results(
+                results
+            )
+
+        self.stdout.write(
+            "\nImporting Turkey Bag Limits..."
+        )
+
+        for season_group in (
+            TURKEY_SEASON_GROUPS
+        ):
+            data = parser.parse_bag_limits(
+                season_group
+            )
+
+            results = (
+                importer.import_turkey_bag_limits(
+                    data,
+                    source=source,
+                    season_year=season_year,
+                )
+            )
+
+            self._print_bag_results(
+                results
+            )
+
+    def _import_wild_hog(self,*, html, importer, source, season_year):
+        self.stdout.write(
+            "\n=== Wild Hog ==="
+        )
+
+        parser = FWCWildHogParser(
+            html
         )
 
         private_data = (
@@ -101,16 +407,31 @@ class Command(BaseCommand):
             )
         )
 
-        public_data = (
-            parser.parse_public_land_note(
-                season_year
-            )
-        )
-
-        private_result = (
+        result = (
             importer.import_wild_hog_private_land(
                 private_data,
                 source=source,
+            )
+        )
+
+        self._print_object_result(
+            result["season"]["object"],
+            result["season"]["created"],
+        )
+
+        self._print_object_result(
+            result["bag_limit"]["object"],
+            result["bag_limit"]["created"],
+        )
+
+        self._print_note_result(
+            result["note"]["object"],
+            result["note"]["created"],
+        )
+
+        public_data = (
+            parser.parse_public_land_note(
+                season_year
             )
         )
 
@@ -121,312 +442,259 @@ class Command(BaseCommand):
             )
         )
 
-        season_result = private_result["season"]
-
-        season_action = (
-            "CREATE"
-            if season_result["created"]
-            else "UPDATE"
+        self._print_note_result(
+            public_result["note"],
+            public_result["created"],
         )
 
-        self.stdout.write(
-            f"[{season_action}] "
-            f"Wild Hog / Private Land / YEAR_ROUND"
+    def _import_burmese_python_source(self,*, html, importer, source, season_year):
+        parser = FWCBurmesePythonParser(
+            html
         )
 
-        bag_result = private_result["bag_limit"]
-
-        bag_action = (
-            "CREATE"
-            if bag_result["created"]
-            else "UPDATE"
+        self._import_burmese_python(
+            parser=parser,
+            importer=importer,
+            source=source,
+            season_year=season_year,
         )
 
-        self.stdout.write(
-            f"[{bag_action}] "
-            f"Wild Hog / GENERAL / No Limit"
-        )
 
-        note_result = private_result["note"]
-
-        note_action = (
-            "CREATE"
-            if note_result["created"]
-            else "UPDATE"
-        )
-
-        self.stdout.write(
-            f"[{note_action}] "
-            f"{note_result['object'].title}"
-        )
-
-        public_action = (
-            "CREATE"
-            if public_result["created"]
-            else "UPDATE"
-        )
-
-        self.stdout.write(
-            f"[{public_action}] "
-            f"{public_result['note'].title}"
-        )
-
-        return
-
-        self.stdout.write(
-            "\nImporting Fall Turkey Seasons"
-        )
-
-        for zone in ["A", "B", "C", "D"]:
-            data = parser.parse_fall_zone(
-                zone,
-                season_year,
+    def _import_burmese_python(self, *, parser, importer, source, season_year):
+            self.stdout.write(
+                "\nImporting Burmese Python"
             )
-
-            results = importer.import_turkey_seasons(
-                data,
-                source_title=fetch_result.source.title,
+    
+            private_data = (
+                parser.parse_private_land_rules(
+                    season_year
+                )
             )
-
-            for result in results:
+    
+            private_result = (
+                importer.import_burmese_python_private_land(
+                    private_data,
+                    source=source,
+                )
+            )
+    
+            season_result = private_result["season"]
+    
+            action = (
+                "CREATE"
+                if season_result["created"]
+                else "UPDATE"
+            )
+    
+            self.stdout.write(
+                f"[{action}] "
+                f"Burmese Python / "
+                f"Private Land / YEAR_ROUND"
+            )
+    
+            bag_result = private_result["bag_limit"]
+    
+            action = (
+                "CREATE"
+                if bag_result["created"]
+                else "UPDATE"
+            )
+    
+            self.stdout.write(
+                f"[{action}] "
+                f"Burmese Python / "
+                f"Private Land / GENERAL / No Limit"
+            )
+    
+            note_result = private_result["note"]
+    
+            action = (
+                "CREATE"
+                if note_result["created"]
+                else "UPDATE"
+            )
+    
+            self.stdout.write(
+                f"[{action}] "
+                f"{note_result['object'].title}"
+            )
+    
+            # -----------------------------------
+            # Commission-managed lands
+            # -----------------------------------
+    
+            managed_data = (
+                parser.parse_managed_land_rules(
+                    season_year
+                )
+            )
+    
+            managed_result = (
+                importer.import_burmese_python_managed_land(
+                    managed_data,
+                    source=source,
+                )
+            )
+    
+            self.stdout.write(
+                "\nCommission-Managed Lands"
+            )
+    
+            for result in managed_result["seasons"]:
                 season = result["season"]
-
+    
                 action = (
                     "CREATE"
                     if result["created"]
                     else "UPDATE"
                 )
-
+    
                 self.stdout.write(
                     f"[{action}] "
-                    f"{season.species} / "
-                    f"Zone {season.zone.code} / "
-                    f"{season.season_type}"
+                    f"Burmese Python / "
+                    f"{season.managed_area.name} / "
+                    f"YEAR_ROUND"
                 )
+    
+            bag_result = managed_result["bag_limit"]
+    
+            action = (
+                "CREATE"
+                if bag_result["created"]
+                else "UPDATE"
+            )
+    
+            self.stdout.write(
+                f"[{action}] "
+                f"Burmese Python / "
+                f"Commission-Managed Land / "
+                f"GENERAL / No Limit"
+            )
+    
+            note_result = managed_result["note"]
+    
+            action = (
+                "CREATE"
+                if note_result["created"]
+                else "UPDATE"
+            )
+    
+            self.stdout.write(
+                f"[{action}] "
+                f"{note_result['object'].title}"
+            )
 
-                for period in result["periods"]:
-                    self.stdout.write(
-                        f"    {period['start_date']} "
-                        f"-> {period['end_date']}"
-                    )
 
-        self.stdout.write(
-            "\nImporting Spring Turkey Seasons"
+    def _action(self, created):
+        return (
+            "CREATE"
+            if created
+            else "UPDATE"
         )
 
-        for area_code in [
-            "NORTH_SR70",
-            "SOUTH_SR70",
-        ]:
-            data = parser.parse_spring_area(
-                area_code,
-                season_year,
-            )
+    def _print_season_results(self, results):
+        for result in results:
+            season = result["season"]
 
-            results = importer.import_turkey_seasons(
-                data,
-                source_title=fetch_result.source.title,
-            )
+            scope = []
 
-            for result in results:
-                season = result["season"]
-
-                action = (
-                    "CREATE"
-                    if result["created"]
-                    else "UPDATE"
+            if season.zone:
+                scope.append(
+                    f"Zone {season.zone.code}"
                 )
 
+            if season.dmu:
+                scope.append(
+                    f"DMU {season.dmu.code}"
+                )
+
+            if season.regulatory_area:
+                scope.append(
+                    season.regulatory_area.name
+                )
+
+            if season.managed_area:
+                scope.append(
+                    season.managed_area.name
+                )
+
+            scope_text = (
+                " / ".join(scope)
+                if scope
+                else season.land_type.name
+            )
+
+            action = self._action(
+                result["created"]
+            )
+
+            self.stdout.write(
+                f"[{action}] "
+                f"{season.species} / "
+                f"{scope_text} / "
+                f"{season.season_type}"
+            )
+
+            for period in result.get(
+                "periods",
+                [],
+            ):
                 self.stdout.write(
-                    f"[{action}] "
-                    f"{season.species} / "
-                    f"{season.regulatory_area.name} / "
-                    f"{season.season_type}"
+                    f"    "
+                    f"{period['start_date']} "
+                    f"-> "
+                    f"{period['end_date']}"
                 )
 
-                for period in result["periods"]:
-                    self.stdout.write(
-                        f"    {period['start_date']} "
-                        f"-> {period['end_date']}"
-                    )
+    def _print_bag_results(self, results):
+        for result in results:
+            rule = result["rule"]
 
-        self.stdout.write(
-            "\nImporting Turkey Bag Limits"
+            action = self._action(
+                result["created"]
+            )
+
+            value = (
+                "No Limit"
+                if rule.is_unlimited
+                else rule.limit
+            )
+
+            scope = (
+                rule.season_group
+                if rule.season_group
+                else "General"
+            )
+
+            if rule.dmu:
+                scope = (
+                    f"DMU {rule.dmu.code}"
+                )
+
+            self.stdout.write(
+                f"[{action}] "
+                f"{rule.species} / "
+                f"{scope} / "
+                f"{rule.limit_type} / "
+                f"{value}"
+            )
+
+    def _print_note_result(self, note, created):
+        action = self._action(
+            created
         )
 
-        for season_group in [
-            "FALL",
-            "SPRING",
-        ]:
-            data = parser.parse_bag_limits(
-                season_group
-            )
+        self.stdout.write(
+            f"[{action}] "
+            f"Regulation Note / "
+            f"{note.title}"
+        )
 
-            results = importer.import_turkey_bag_limits(
-                data,
-                source_title=fetch_result.source.title,
-                season_year=season_year,
-            )
+    def _print_object_result(self, obj, created):
+        action = self._action(
+            created
+        )
 
-            for result in results:
-                rule = result["rule"]
-
-                action = (
-                    "CREATE"
-                    if result["created"]
-                    else "UPDATE"
-                )
-
-                self.stdout.write(
-                    f"[{action}] "
-                    f"{rule.season_group} / "
-                    f"{rule.limit_type} / "
-                    f"{rule.limit}"
-                )
-
-        # if source_key == "season_dates":
-        #     parser = FWCDeerParser(html)
-
-        # elif source_key == "burmese_python_removal":
-        #     raise NotImplementedError(
-        #         "Burmese Python importer "
-        #         "has not been implemented yet."
-        #     )
-
-        # else:
-        #     raise NotImplementedError(
-        #         f"Importer not implemented for "
-        #         f"source: {source_key}"
-        #     )
-
-        # bag_limit_data = parser.parse_bag_limits()
-
-       
-
-        # bag_results = importer.import_deer_bag_limits(
-        #     bag_limit_data,
-        #     source_title=fetch_result.source.title,
-        #     season_year=season_year,
-        # )
-
-        # self.stdout.write(
-        #     "\nImporting Deer Bag Limits"
-        # )
-
-        # for result in bag_results["rules"]:
-        #     rule = result["rule"]
-
-        #     action = (
-        #         "CREATE"
-        #         if result["created"]
-        #         else "UPDATE"
-        #     )
-
-        #     category = (
-        #         rule.harvest_category.name
-        #         if rule.harvest_category
-        #         else "All Deer"
-        #     )
-
-        #     if rule.dmu:
-        #         scope = f"DMU {rule.dmu.code}"
-        #     else:
-        #         scope = "General"
-
-        #     value = (
-        #         "No Limit"
-        #         if rule.is_unlimited
-        #         else str(rule.limit)
-        #     )
-
-        #     self.stdout.write(
-        #         f"[{action}] "
-        #         f"{scope} / "
-        #         f"{rule.limit_type} / "
-        #         f"{category} / "
-        #         f"{value}"
-        #     )
-
-        # note_result = bag_results["note"]
-
-        # if note_result:
-        #     action = (
-        #         "CREATE"
-        #         if note_result["created"]
-        #         else "UPDATE"
-        #     )
-
-        #     self.stdout.write(
-        #         f"[{action}] Regulation Note / "
-        #         f"{note_result['note'].title}"
-        #     )
-
-        # importer = FWCImporter(
-        #             dry_run=options["dry_run"]
-        #         )
-
-        # with transaction.atomic():
-        #     source = importer.sync_source(
-        #         fetch_result
-        #     )
-
-        #     zones = ["A", "B", "C", "D"]
-
-        #     for zone in zones:
-        #         self.stdout.write(
-        #             f"\nProcessing Antlerless Deer - Zone {zone}..."
-        #         )
-
-        #         data = parser.parse_antlerless_zone(
-        #             zone=zone,
-        #             season_year=season_year,
-        #         )
-
-        #         results = importer.import_antlerless_zone(
-        #             data,
-        #             source = source
-        #         )
-
-        #         for result in results:
-        #             season = result["season"]
-
-        #             action = (
-        #                 "CREATE"
-        #                 if result["created"]
-        #                 else "UPDATE"
-        #             )
-
-        #             if season.dmu:
-        #                 scope = (
-        #                     f"Zone {season.zone.code} / "
-        #                     f"DMU {season.dmu.code}"
-        #                 )
-        #             else:
-        #                 scope = f"Zone {season.zone.code}"
-
-        #             self.stdout.write(
-        #                 f"[{action}] "
-        #                 f"{season.species} / "
-        #                 f"{season.harvest_category} / "
-        #                 f"{scope} / "
-        #                 f"{season.season_type}"
-        #             )
-
-        #             for period in result["periods"]:
-        #                 self.stdout.write(
-        #                     f"    {period['start_date']} "
-        #                     f"-> {period['end_date']}"
-        #                 )
-            
-            if options["dry_run"]:
-                self.stdout.write(
-                    self.style.WARNING(
-                        "\nDRY RUN — changes rolled back."
-                    )
-                )
-            else:
-                self.stdout.write(
-                    self.style.SUCCESS(
-                        "\nImport completed successfully."
-                    )
-                )
+        self.stdout.write(
+            f"[{action}] {obj}"
+        )
