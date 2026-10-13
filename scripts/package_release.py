@@ -78,6 +78,8 @@ def main():
     parser.add_argument("--backend-original", type=Path, required=True)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--manifest-only", action="store_true")
+    parser.add_argument("--manifest-output", type=Path,
+                        help="Optional comparison report outside the project; not bundled in the ZIP.")
     options = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
     frontend, front_names = comparison(options.frontend_original, "", root)
@@ -93,7 +95,12 @@ def main():
         "excluded_from_release": sorted(EXCLUDED_DIRS) + [
             "SQLite databases and journals", "local secrets and .env", "TLS keys/certificates", "logs"],
     }
-    (root / "docs" / "CHANGE_MANIFEST.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    if options.manifest_only and not options.manifest_output:
+        parser.error("--manifest-only requires --manifest-output outside the project.")
+    if options.manifest_output:
+        if Path(os.path.abspath(options.manifest_output)).resolve().is_relative_to(root):
+            parser.error("Choose a comparison report output outside the project.")
+        options.manifest_output.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     print(f"Original frontend: {len(front_names)} files; {len(frontend['modified_files'])} modified.")
     print(f"Original backend source: {len(back_names)} files; {len(backend['modified_files'])} modified.")
     print(f"Added files: {len(added)}. Original source files removed: 0.")

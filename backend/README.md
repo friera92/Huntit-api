@@ -4,7 +4,7 @@ HuntIt is a proposed responsive web application that will help hunters locate wi
 
 This repository contains the **Python/Django backend** for HuntIt.
 
-In this combined copy, the Angular frontend is one directory above this backend. Start with the parent's [integration guide](../docs/INTEGRATION.md), which supplies the current shared setup, HTTPS launcher, authentication/personal APIs, and regulatory publication instructions. The original standalone backend instructions below are retained as reference; a separate repository or separately configured backend is not needed.
+For the combined Angular/Django application, start with the [project README](../README.md) and [integration guide](../docs/INTEGRATION.md). The standalone backend reference below remains available for backend development.
 
 ---
 
@@ -525,8 +525,4 @@ The original working catalog contains four species:
 - Wild Hog
 - Burmese Python
 
-The combined release provides 18 curated publications for hog, python and deer, including private-land deer DMUs and J.W. Corbett deer. The project owner also confirmed verification of all existing teammate information: a separate frozen release makes matching original seasons, limits, notes and species information available in search, including private-land turkey. Original season dates and geography are preserved, and blank permit fields remain unknown. Unsupported selections return no reviewed answer. This does not claim exhaustive Florida WMA coverage. See the [source and scope review pack](../docs/REGULATORY_REVIEW.md) before extending the supported dataset.
-
-## Combined-project integration
-
-This backend is included under `backend/` in the combined Angular project. Use the parent's [integration guide](../docs/INTEGRATION.md) for clean starter data, account endpoints, private saved information, source-reviewed search results, and the shared local launcher. Public results read immutable approved snapshots; importer output and draft edits do not automatically change published answers. Share migrations and clean release data rather than a database containing accounts, sessions, or personal records.
+See the [regulatory guide](../docs/REGULATORY_REVIEW.md) for supported coverage and the source-review process. Public results use approved snapshots; new imports and draft edits require review before publication.
