@@ -1,0 +1,22 @@
+# Fisheating Creek python exception review
+
+**Status: human-approved for local publication on October 12, 2026.** The project owner checked the sources and stated **“Sources checked — approve local publication.”** See [DATA_EXPANSION_APPROVAL.md](../DATA_EXPANSION_APPROVAL.md) for the exact approved expansion and provenance. This separate approval covers the four precise Fisheating replacements and the broad-rule exclusions. Two locations each support both public-land selector aliases. The worksheet below retains its original pre-publication review instructions as source-review history; the guard against the older overbroad answer remains in place.
+
+The team read [FWC Executive Order 23-16, page 2](https://myfwc.com/media/31857/eo-23-16.pdf), the [2026–2027 Fisheating Creek interactive brochure](https://app.myfwc.com/hgm/hgmsearch/wmad?brochureTitle=Fisheating+Creek), and the [official Fisheating Creek hunt calendar](https://app.myfwc.com/hsc/wmahuntcalendar/?areaName=fisheating+creek). The brochure was inspected in an isolated browser because ordinary text fetching did not expose its content. The calendar corroborates the complete year-specific special-opportunity date endpoints.
+
+| Selected location | Python opportunity and permit conditions |
+|---|---|
+| West of U.S. Highway 27 | Year-round lawful humane removal **without firearms, airguns, bows or crossbows**. Those weapons are limited to open area hunting seasons and methods authorized for that particular season. A management-area permit is required when using a gun, unlike the usual public-python exemption. The year-round lookup does not independently authorize any seasonal weapon. |
+| East of U.S. Highway 27 | Only inside the designated Special-Opportunity Spring Turkey Area, during **March 6–12 or March 20–26, 2027**, and only with the valid **Special-Opportunity Spring Turkey Permit** for that hunt. This permit condition also applies to non-firearm removal. No year-round east-side removal is claimed. |
+
+The east-side equipment methods are those allowed for the special-opportunity spring turkey season: bows, crossbows, PCP airguns propelling bolts/arrows, and shotguns using No. 2 or smaller shot. Rifles, pistols and PCP bullets are not authorized by that season's method list. Reptile shooting hours are half an hour before sunrise through half an hour after sunset, subject to access and firearm restrictions; the area's separate **1 p.m. turkey shooting cutoff** must not be replaced with the reptile hours.
+
+EO 23-16 prohibits traps and modified/free-bolt captive-bolt stunners. No live python may be removed, no dogs may be used for this removal, and the [FWC humane-killing guidance](https://myfwc.com/wildlifehabitats/nonnatives/python/humane-killing-methods/) and anti-cruelty requirements remain applicable. The [public removal directory](https://myfwc.com/wildlifehabitats/nonnatives/python/removing/) does not override the order's specific Fisheating restrictions.
+
+The search must distinguish the two locations. New regulatory-area identifiers are `FISHEATING_WEST_US27` and `FISHEATING_EAST_US27`; an approved exact-area lookup prompts for the side if absent. The east label explicitly limits coverage to the special-opportunity turkey area. Users must confirm the actual parcel and access on the brochure map; a side-of-highway selection is not a geographic boundary measurement.
+
+The earlier broad public-python draft must exclude Fisheating when the correction is reviewed, and the four precise drafts must be reviewed together. Preserve prior immutable publication history, but do not continue presenting the known-overbroad east-side year-round/no-permit statement while its correction awaits review. Existing frozen imported records remain historical project data; they do not supersede these official exceptions.
+
+Implementation: `backend/integration/python_area_data.py`, `seed_fisheating_python_drafts()`. QA: `backend/integration/test_python_area_data.py` verifies four valid drafts, no automatic publication or overwrites, exact east endpoints and closed gaps, side prompts and isolation, both public selectors, west equipment exclusions, gun permit exception, humane-removal restrictions and distinct turkey/reptile hours. Nine tests pass in an isolated Django test database.
+
+Review coverage is July 1, 2026–June 30, 2027; it is a dataset maintenance boundary. Current closures and superseding orders still require checking.

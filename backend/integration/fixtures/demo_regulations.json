@@ -1,0 +1,4652 @@
+[
+{
+  "model": "regulations.species",
+  "pk": 1,
+  "fields": {
+    "common_name": "Burmese Python",
+    "scientific_name": "Python bivittatus",
+    "description": "",
+    "habitat": "Semi-aquatic environments in South Florida, favoring the Everglades, canal banks, levees, and marshes.",
+    "behavior": "Cryptic ambush predator. Activity is governed by thermoregulation; detection probability in brush is below 1%.",
+    "hunting_strategy": "Active visual surveying (road/levee cruising) on sunny winter days or warm dusk hours. Capture using snake hooks/tongs, followed by legal two-step euthanization.",
+    "image_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.species",
+  "pk": 2,
+  "fields": {
+    "common_name": "Wild Hog",
+    "scientific_name": "Sus scrofa",
+    "description": "",
+    "habitat": "Present in all 67 counties: oak-cabbage palm hammocks, pine flatwoods, marshes, and sloughs.",
+    "behavior": "Small sounders or solitary boars. Aggressive rooting feeders. Highly adaptable and readily turns nocturnal under hunting pressure.",
+    "hunting_strategy": "Night hunting over bait on private land using thermal optics/lights; swamp buggies for flooded terrain; trained bay dogs in dense brush.",
+    "image_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.species",
+  "pk": 3,
+  "fields": {
+    "common_name": "White Tailed Deer",
+    "scientific_name": "Odocoileus virginianus",
+    "description": "",
+    "habitat": "Edge habitats where dense timber meets open agricultural land or young ground vegetation.",
+    "behavior": "Crepuscular (active at dawn/dusk). Follows distinct scent trails and bedding corridors. High activity during seasonal rut cycles.",
+    "hunting_strategy": "Tree stands or ground blinds overlooking travel funnels or feed sources downwind. Scent control is vital; antler rattling and grunt calls during rut.",
+    "image_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.species",
+  "pk": 4,
+  "fields": {
+    "common_name": "Wild Turkey",
+    "scientific_name": "",
+    "description": "",
+    "habitat": "",
+    "behavior": "",
+    "hunting_strategy": "",
+    "image_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.huntingzone",
+  "pk": 1,
+  "fields": {
+    "name": "Zona A",
+    "code": "A",
+    "description": "Florida Hunting Zone A",
+    "map_url": "https://myfwc.com/hunting/season-dates/zone-map/"
+  }
+},
+{
+  "model": "regulations.huntingzone",
+  "pk": 2,
+  "fields": {
+    "name": "Zone B",
+    "code": "B",
+    "description": "Florida Hunting Zone B",
+    "map_url": "https://myfwc.com/hunting/season-dates/zone-map/"
+  }
+},
+{
+  "model": "regulations.huntingzone",
+  "pk": 3,
+  "fields": {
+    "name": "Zone C",
+    "code": "C",
+    "description": "Florida Hunting Zone C",
+    "map_url": "https://myfwc.com/hunting/season-dates/zone-map/"
+  }
+},
+{
+  "model": "regulations.huntingzone",
+  "pk": 4,
+  "fields": {
+    "name": "Zone D",
+    "code": "D",
+    "description": "Florida Hunting Zone D",
+    "map_url": "https://myfwc.com/hunting/season-dates/zone-map/"
+  }
+},
+{
+  "model": "regulations.landtype",
+  "pk": 1,
+  "fields": {
+    "name": "Private Land",
+    "description": "Privately owned land outside the FWC Wildlife Management Area system."
+  }
+},
+{
+  "model": "regulations.landtype",
+  "pk": 2,
+  "fields": {
+    "name": "Wildlife Management Area (WMA)",
+    "description": "Public land managed under the Florida Wildlife Management Area system; area-specific regulations may apply."
+  }
+},
+{
+  "model": "regulations.landtype",
+  "pk": 3,
+  "fields": {
+    "name": "Commission-Managed Land",
+    "description": ""
+  }
+},
+{
+  "model": "regulations.regulatoryarea",
+  "pk": 1,
+  "fields": {
+    "code": "NORTH_SR70",
+    "name": "North of State Road 70",
+    "description": "",
+    "map_url": ""
+  }
+},
+{
+  "model": "regulations.regulatoryarea",
+  "pk": 2,
+  "fields": {
+    "code": "SOUTH_SR70",
+    "name": "South of State Road 70",
+    "description": "",
+    "map_url": ""
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 5,
+  "fields": {
+    "name": "Archery season",
+    "code": "ARCHERY",
+    "description": "Only bows may be used.",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 6,
+  "fields": {
+    "name": "Crossbow season",
+    "code": "CROSSBOW",
+    "description": "Only crossbows, bows and airbows may be used.",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 7,
+  "fields": {
+    "name": "Muzzleloading gun season",
+    "code": "MUZZLELOADING_GUN",
+    "description": "Only muzzleloaders, crossbows, bows and airbows may be used. Only muzzleloading guns designed to have projectiles (bullets) loaded through the muzzle and fired by wheel lock, flintlock, percussion cap or centerfire primer (including 209 primers) may be used. Muzzleloading guns designed to allow accelerant (gun powder) to be loaded at the breech may be used during muzzleloading gun seasons.",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 8,
+  "fields": {
+    "name": "General gun season",
+    "code": "GENERAL_GUN",
+    "description": "Centerfire rifles, shotguns, centerfire handguns, muzzleloaders, pre-charged pneumatic air guns, crossbows and bows may be used.",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 9,
+  "fields": {
+    "name": "Trapping season",
+    "code": "TRAPPING",
+    "description": "Live traps and snares (including power snares) can be used to take furbearers and wild hogs, but must be checked every 24 hours. The use of steel leg-hold traps, dog-proof raccoon traps and body-grip (conibear) traps is prohibited, except when permitted by the FWC.",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 10,
+  "fields": {
+    "name": "Youth Deer Hunt Weekend",
+    "code": "YOUTH_DEER",
+    "description": "Special deer hunting weekend for eligible youth hunters.",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 11,
+  "fields": {
+    "name": "Fall turkey season",
+    "code": "FALL_TURKEY",
+    "description": "",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 12,
+  "fields": {
+    "name": "Spring turkey season",
+    "code": "SPRING_TURKEY",
+    "description": "",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 13,
+  "fields": {
+    "name": "Youth turkey hunt",
+    "code": "YOUTH_TURKEY",
+    "description": "",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.seasontype",
+  "pk": 14,
+  "fields": {
+    "name": "Year-Round",
+    "code": "YEAR_ROUND",
+    "description": "",
+    "sort_order": 0
+  }
+},
+{
+  "model": "regulations.source",
+  "pk": 1,
+  "fields": {
+    "organization": "Florida Fish and Wildlife Conservation Commission (FWC)",
+    "title": "Florida Resident Game and Furbearer Hunting Season Dates and Bag Limits",
+    "url": "https://myfwc.com/hunting/season-dates/",
+    "document_type": "Web Page",
+    "effective_date": null,
+    "retrieved_at": "2026-10-07T00:27:51.879Z",
+    "last_verified_at": null,
+    "notes": "Official FWC source for statewide hunting season dates and bag limits on lands outside the Wildlife Management Area system."
+  }
+},
+{
+  "model": "regulations.source",
+  "pk": 2,
+  "fields": {
+    "organization": "Florida Fish and Wildlife Conservation Commission (FWC)",
+    "title": "Wild Hog",
+    "url": "https://myfwc.com/hunting/wild-hog/",
+    "document_type": "Web Page",
+    "effective_date": null,
+    "retrieved_at": "2026-10-07T00:27:52.332Z",
+    "last_verified_at": null,
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.source",
+  "pk": 3,
+  "fields": {
+    "organization": "Florida Fish and Wildlife Conservation Commission (FWC)",
+    "title": "Removing Pythons in Florida",
+    "url": "https://myfwc.com/wildlifehabitats/nonnatives/python/removing/",
+    "document_type": "Web Page",
+    "effective_date": null,
+    "retrieved_at": "2026-10-07T00:27:52.679Z",
+    "last_verified_at": null,
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 1,
+  "fields": {
+    "name": "A I -FEB PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 2,
+  "fields": {
+    "name": "Allapattah Flats WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 3,
+  "fields": {
+    "name": "Allapattah Flats PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 4,
+  "fields": {
+    "name": "Big Cypress WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 5,
+  "fields": {
+    "name": "C-23/24 Reservoir PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 6,
+  "fields": {
+    "name": "CREW WEA",
+    "area_type": "WEA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 7,
+  "fields": {
+    "name": "Dinner Island Ranch WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 8,
+  "fields": {
+    "name": "DuPuis Dove Field PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 9,
+  "fields": {
+    "name": "Everglades and Francis S. Taylor WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 10,
+  "fields": {
+    "name": "Fisheating Creek WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 11,
+  "fields": {
+    "name": "Frog Pond North PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 12,
+  "fields": {
+    "name": "Holey Land WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 13,
+  "fields": {
+    "name": "J. W. Corbett WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 14,
+  "fields": {
+    "name": "John C. and Mariana Jones/Hungryland WEA",
+    "area_type": "WEA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 15,
+  "fields": {
+    "name": "John G. and Susan H. DuPuis, Jr. WEA",
+    "area_type": "WEA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 16,
+  "fields": {
+    "name": "Picayune Strand WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 17,
+  "fields": {
+    "name": "Rocky Glades PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 18,
+  "fields": {
+    "name": "Rotenberger WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 19,
+  "fields": {
+    "name": "Southern Glades WEA",
+    "area_type": "WEA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 20,
+  "fields": {
+    "name": "Spirit-of-the-Wild WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 21,
+  "fields": {
+    "name": "Stormwater Treatment Area 1 West PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 22,
+  "fields": {
+    "name": "Stormwater Treatment Area 2 PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 23,
+  "fields": {
+    "name": "Stormwater Treatment Area 3/4 PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 24,
+  "fields": {
+    "name": "Stormwater Treatment Area 5/6 PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 25,
+  "fields": {
+    "name": "Okaloacoochee Slough WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 26,
+  "fields": {
+    "name": "Everglades Headwaters WMA, Kissimmee Bend Unit",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 27,
+  "fields": {
+    "name": "Fred C. Babcock / Cecil M. Webb WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 28,
+  "fields": {
+    "name": "Fred C. Babcock/Cecil M. Webb WMA Yucca Pens Unit",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 29,
+  "fields": {
+    "name": "Orange Hammock WMA",
+    "area_type": "WMA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 30,
+  "fields": {
+    "name": "Myakka State Forest PSGHA",
+    "area_type": "PSGHA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 31,
+  "fields": {
+    "name": "Hungryland Small Game Area (within John C. and Mariana Jones/Hungryland WEA)",
+    "area_type": "SGA",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.managedarea",
+  "pk": 32,
+  "fields": {
+    "name": "Everglades Headwaters National Wildlife Refuge, Okeechobee Unit",
+    "area_type": "NWR",
+    "county": "",
+    "region": "",
+    "latitude": null,
+    "longitude": null,
+    "acreage": null,
+    "description": "",
+    "brochure_url": "",
+    "map_url": "",
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.licensepermit",
+  "pk": 1,
+  "fields": {
+    "name": "Florida Hunting License",
+    "permit_type": "License",
+    "description": "Florida recreational hunting license, subject to applicable exemptions and residency requirements.",
+    "requirements": "",
+    "source": null,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.licensepermit",
+  "pk": 2,
+  "fields": {
+    "name": "Deer Permit",
+    "permit_type": "Permit",
+    "description": "Permit associated with hunting deer in Florida.",
+    "requirements": "",
+    "source": null,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.licensepermit",
+  "pk": 3,
+  "fields": {
+    "name": "Management Area Permit",
+    "permit_type": "Permit",
+    "description": "Permit required when applicable for hunting on Wildlife Management Areas.",
+    "requirements": "",
+    "source": null,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.licensepermit",
+  "pk": 4,
+  "fields": {
+    "name": "Archery Season Permit",
+    "permit_type": "Permit",
+    "description": "Permit required when applicable during archery season.",
+    "requirements": "",
+    "source": null,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.licensepermit",
+  "pk": 5,
+  "fields": {
+    "name": "Crossbow Season Permit",
+    "permit_type": "Permit",
+    "description": "Permit required when applicable during crossbow season.",
+    "requirements": "",
+    "source": null,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.licensepermit",
+  "pk": 6,
+  "fields": {
+    "name": "Muzzleloading Gun Season Permit",
+    "permit_type": "Permit",
+    "description": "Permit required when applicable during muzzleloading gun season.",
+    "requirements": "",
+    "source": null,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 1,
+  "fields": {
+    "name": "Bow",
+    "description": "Bow authorized under applicable FWC regulations."
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 2,
+  "fields": {
+    "name": "Crossbow",
+    "description": "Crossbow authorized under applicable FWC regulations."
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 3,
+  "fields": {
+    "name": "Airbow",
+    "description": "Airbow authorized where permitted by the applicable season."
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 4,
+  "fields": {
+    "name": "Muzzleloader",
+    "description": "Muzzleloading firearm meeting applicable FWC requirements."
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 5,
+  "fields": {
+    "name": "Centerfire Rifle",
+    "description": "Centerfire rifle authorized for taking game where permitted."
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 6,
+  "fields": {
+    "name": "Shotgun",
+    "description": "Shotgun authorized for taking game where permitted."
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 7,
+  "fields": {
+    "name": "Centerfire Handgun",
+    "description": "Centerfire handgun authorized for taking game where permitted."
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 8,
+  "fields": {
+    "name": "PCP Air Gun",
+    "description": "Pre-charged pneumatic air gun meeting applicable FWC requirements."
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 9,
+  "fields": {
+    "name": "Rifle",
+    "description": ""
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 10,
+  "fields": {
+    "name": "Pistol",
+    "description": ""
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 11,
+  "fields": {
+    "name": "Air Gun",
+    "description": ""
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 12,
+  "fields": {
+    "name": "Dogs",
+    "description": ""
+  }
+},
+{
+  "model": "regulations.legalmethod",
+  "pk": 13,
+  "fields": {
+    "name": "Live Trap",
+    "description": ""
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 1,
+  "fields": {
+    "code": "A1",
+    "zone": 1,
+    "description": "DMU-A1"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 2,
+  "fields": {
+    "code": "A2",
+    "zone": 1,
+    "description": "DMU-A2"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 3,
+  "fields": {
+    "code": "A3",
+    "zone": 1,
+    "description": "DMU-A3"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 4,
+  "fields": {
+    "code": "B1",
+    "zone": 2,
+    "description": "DMU-B1"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 5,
+  "fields": {
+    "code": "C1",
+    "zone": 3,
+    "description": "DMU-C1"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 6,
+  "fields": {
+    "code": "C2",
+    "zone": 3,
+    "description": "DMU-C2"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 7,
+  "fields": {
+    "code": "C3",
+    "zone": 3,
+    "description": "DMU-C3"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 8,
+  "fields": {
+    "code": "C4",
+    "zone": 3,
+    "description": "DMU-C4"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 9,
+  "fields": {
+    "code": "C5",
+    "zone": 3,
+    "description": "DMU-C5"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 10,
+  "fields": {
+    "code": "C6",
+    "zone": 3,
+    "description": "DMU-C6"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 11,
+  "fields": {
+    "code": "D1",
+    "zone": 4,
+    "description": "DMU-D1"
+  }
+},
+{
+  "model": "regulations.deermanagementunit",
+  "pk": 12,
+  "fields": {
+    "code": "D2",
+    "zone": 4,
+    "description": "DMU-D2"
+  }
+},
+{
+  "model": "regulations.harvestcategory",
+  "pk": 1,
+  "fields": {
+    "name": "Antlered",
+    "description": "Animal meeting the applicable legal definition for antlered game."
+  }
+},
+{
+  "model": "regulations.harvestcategory",
+  "pk": 2,
+  "fields": {
+    "name": "Antlerless",
+    "description": "Animal meeting the applicable legal definition for antlerless game."
+  }
+},
+{
+  "model": "regulations.harvestcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Either Sex",
+    "description": "Both antlered and antlerless animals may be taken, subject to applicable regulations."
+  }
+},
+{
+  "model": "regulations.harvestcategory",
+  "pk": 4,
+  "fields": {
+    "name": "Gobbler and Bearded Turkey",
+    "description": "Gobbler and Bearded Turkey"
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 143,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 144,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 145,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 146,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 10,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 147,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 148,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 149,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 150,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 151,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 10,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 152,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 153,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 154,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 155,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 156,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 10,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 157,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 158,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 159,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 160,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 161,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 10,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 162,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 1,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 163,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 2,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 164,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 3,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 165,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 2,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 166,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 3,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 167,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 10,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 2,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 168,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 10,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 3,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 169,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 2,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 170,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 3,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 171,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 172,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 173,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 174,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 10,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 175,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 176,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 177,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 178,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 179,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 10,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 180,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 5,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 181,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 6,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 182,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 7,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 183,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 8,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 184,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 9,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 185,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": 10,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 186,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 187,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 188,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 8,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 189,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 10,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 190,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 2,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 191,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 192,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 193,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 194,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 1,
+    "managed_area": null,
+    "season_type": 11,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 195,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 196,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 197,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 198,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 2,
+    "managed_area": null,
+    "season_type": 11,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 199,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 200,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 201,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 202,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 3,
+    "managed_area": null,
+    "season_type": 11,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 203,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 5,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 204,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 6,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 205,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 7,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 206,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": 4,
+    "managed_area": null,
+    "season_type": 11,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 207,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": 1,
+    "zone": null,
+    "managed_area": null,
+    "season_type": 13,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 208,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": 1,
+    "zone": null,
+    "managed_area": null,
+    "season_type": 12,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 209,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": 2,
+    "zone": null,
+    "managed_area": null,
+    "season_type": 13,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 210,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "regulatory_area": 2,
+    "zone": null,
+    "managed_area": null,
+    "season_type": 12,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 1,
+    "dmu": null,
+    "harvest_category": 4,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 211,
+  "fields": {
+    "species": 2,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": null,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 2,
+    "dmu": null,
+    "harvest_category": 3,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": [
+      1,
+      2,
+      6,
+      9,
+      10,
+      11,
+      12,
+      13
+    ]
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 212,
+  "fields": {
+    "species": 1,
+    "land_type": 1,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": null,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 213,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 1,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 214,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 2,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 215,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 3,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 216,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 4,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 217,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 5,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 218,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 6,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 219,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 7,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 220,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 8,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 221,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 9,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 222,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 10,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 223,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 11,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 224,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 12,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 225,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 13,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 226,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 14,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 227,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 15,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 228,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 16,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 229,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 17,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 230,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 18,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 231,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 19,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 232,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 20,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 233,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 21,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 234,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 22,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 235,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 23,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 236,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 24,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 237,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 25,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 238,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 26,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 239,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 27,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 240,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 28,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 241,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 29,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 242,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 30,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 243,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 31,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.huntingseason",
+  "pk": 244,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "regulatory_area": null,
+    "zone": null,
+    "managed_area": 32,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "daily_bag_limit": null,
+    "possession_limit": null,
+    "annual_limit": null,
+    "source": 3,
+    "dmu": null,
+    "harvest_category": null,
+    "notes": "",
+    "is_active": true,
+    "permits": [],
+    "legal_methods": []
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 125,
+  "fields": {
+    "season": 143,
+    "start_date": "2026-08-01",
+    "end_date": "2026-08-30",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 126,
+  "fields": {
+    "season": 144,
+    "start_date": "2026-08-01",
+    "end_date": "2026-09-04",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 127,
+  "fields": {
+    "season": 145,
+    "start_date": "2026-09-05",
+    "end_date": "2026-09-18",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 128,
+  "fields": {
+    "season": 146,
+    "start_date": "2026-09-12",
+    "end_date": "2026-09-13",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 129,
+  "fields": {
+    "season": 147,
+    "start_date": "2026-09-19",
+    "end_date": "2026-10-18",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 130,
+  "fields": {
+    "season": 147,
+    "start_date": "2026-11-21",
+    "end_date": "2027-01-03",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 131,
+  "fields": {
+    "season": 148,
+    "start_date": "2026-10-17",
+    "end_date": "2026-11-15",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 132,
+  "fields": {
+    "season": 149,
+    "start_date": "2026-10-17",
+    "end_date": "2026-11-20",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 133,
+  "fields": {
+    "season": 150,
+    "start_date": "2026-11-21",
+    "end_date": "2026-12-04",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 134,
+  "fields": {
+    "season": 151,
+    "start_date": "2026-11-28",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 135,
+  "fields": {
+    "season": 152,
+    "start_date": "2026-12-05",
+    "end_date": "2027-02-21",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 136,
+  "fields": {
+    "season": 153,
+    "start_date": "2026-09-19",
+    "end_date": "2026-10-18",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 137,
+  "fields": {
+    "season": 154,
+    "start_date": "2026-09-19",
+    "end_date": "2026-10-23",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 138,
+  "fields": {
+    "season": 155,
+    "start_date": "2026-10-24",
+    "end_date": "2026-11-06",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 139,
+  "fields": {
+    "season": 156,
+    "start_date": "2026-10-31",
+    "end_date": "2026-11-01",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 140,
+  "fields": {
+    "season": 157,
+    "start_date": "2026-11-07",
+    "end_date": "2027-01-24",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 141,
+  "fields": {
+    "season": 158,
+    "start_date": "2026-10-24",
+    "end_date": "2026-11-25",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 142,
+  "fields": {
+    "season": 159,
+    "start_date": "2026-10-24",
+    "end_date": "2026-11-25",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 143,
+  "fields": {
+    "season": 159,
+    "start_date": "2026-11-30",
+    "end_date": "2026-12-04",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 144,
+  "fields": {
+    "season": 160,
+    "start_date": "2026-11-26",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 145,
+  "fields": {
+    "season": 160,
+    "start_date": "2026-12-12",
+    "end_date": "2027-02-21",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 146,
+  "fields": {
+    "season": 161,
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-06",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 147,
+  "fields": {
+    "season": 162,
+    "start_date": "2027-02-22",
+    "end_date": "2027-02-28",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 148,
+  "fields": {
+    "season": 162,
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-11",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 149,
+  "fields": {
+    "season": 163,
+    "start_date": "2026-08-01",
+    "end_date": "2026-08-09",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 150,
+  "fields": {
+    "season": 164,
+    "start_date": "2026-08-01",
+    "end_date": "2026-08-16",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 151,
+  "fields": {
+    "season": 165,
+    "start_date": "2026-08-01",
+    "end_date": "2026-08-09",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 152,
+  "fields": {
+    "season": 166,
+    "start_date": "2026-08-01",
+    "end_date": "2026-08-16",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 153,
+  "fields": {
+    "season": 167,
+    "start_date": "2026-09-12",
+    "end_date": "2026-09-13",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 154,
+  "fields": {
+    "season": 168,
+    "start_date": "2026-09-12",
+    "end_date": "2026-09-13",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 155,
+  "fields": {
+    "season": 169,
+    "start_date": "2026-11-21",
+    "end_date": "2026-11-22",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 156,
+  "fields": {
+    "season": 170,
+    "start_date": "2026-11-21",
+    "end_date": "2026-11-24",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 157,
+  "fields": {
+    "season": 171,
+    "start_date": "2026-10-17",
+    "end_date": "2026-11-15",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 158,
+  "fields": {
+    "season": 172,
+    "start_date": "2026-10-17",
+    "end_date": "2026-11-20",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 159,
+  "fields": {
+    "season": 173,
+    "start_date": "2026-11-21",
+    "end_date": "2026-12-04",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 160,
+  "fields": {
+    "season": 174,
+    "start_date": "2026-11-28",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 161,
+  "fields": {
+    "season": 175,
+    "start_date": "2026-12-26",
+    "end_date": "2027-01-03",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 162,
+  "fields": {
+    "season": 176,
+    "start_date": "2026-09-19",
+    "end_date": "2026-10-18",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 163,
+  "fields": {
+    "season": 177,
+    "start_date": "2026-09-19",
+    "end_date": "2026-10-23",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 164,
+  "fields": {
+    "season": 178,
+    "start_date": "2026-10-24",
+    "end_date": "2026-11-06",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 165,
+  "fields": {
+    "season": 179,
+    "start_date": "2026-10-31",
+    "end_date": "2026-11-01",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 166,
+  "fields": {
+    "season": 180,
+    "start_date": "2026-11-21",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 167,
+  "fields": {
+    "season": 181,
+    "start_date": "2026-11-21",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 168,
+  "fields": {
+    "season": 182,
+    "start_date": "2026-11-21",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 169,
+  "fields": {
+    "season": 183,
+    "start_date": "2026-11-21",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 170,
+  "fields": {
+    "season": 184,
+    "start_date": "2026-11-07",
+    "end_date": "2026-12-06",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 171,
+  "fields": {
+    "season": 185,
+    "start_date": "2026-11-21",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 172,
+  "fields": {
+    "season": 186,
+    "start_date": "2026-10-24",
+    "end_date": "2026-11-25",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 173,
+  "fields": {
+    "season": 187,
+    "start_date": "2026-10-24",
+    "end_date": "2026-11-25",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 174,
+  "fields": {
+    "season": 187,
+    "start_date": "2026-11-30",
+    "end_date": "2026-12-04",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 175,
+  "fields": {
+    "season": 188,
+    "start_date": "2026-11-26",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 176,
+  "fields": {
+    "season": 188,
+    "start_date": "2026-12-12",
+    "end_date": "2027-02-21",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 177,
+  "fields": {
+    "season": 189,
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-06",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 178,
+  "fields": {
+    "season": 190,
+    "start_date": "2027-02-22",
+    "end_date": "2027-02-28",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 179,
+  "fields": {
+    "season": 190,
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-11",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 180,
+  "fields": {
+    "season": 191,
+    "start_date": "2026-08-01",
+    "end_date": "2026-08-30",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 181,
+  "fields": {
+    "season": 192,
+    "start_date": "2026-08-01",
+    "end_date": "2026-09-04",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 182,
+  "fields": {
+    "season": 193,
+    "start_date": "2026-09-05",
+    "end_date": "2026-09-18",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 183,
+  "fields": {
+    "season": 194,
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-18",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 184,
+  "fields": {
+    "season": 194,
+    "start_date": "2026-11-21",
+    "end_date": "2027-01-03",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 185,
+  "fields": {
+    "season": 195,
+    "start_date": "2026-10-17",
+    "end_date": "2026-11-15",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 186,
+  "fields": {
+    "season": 196,
+    "start_date": "2026-10-17",
+    "end_date": "2026-11-20",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 187,
+  "fields": {
+    "season": 197,
+    "start_date": "2026-11-21",
+    "end_date": "2026-12-04",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 188,
+  "fields": {
+    "season": 198,
+    "start_date": "2026-12-05",
+    "end_date": "2027-01-31",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 189,
+  "fields": {
+    "season": 199,
+    "start_date": "2026-09-19",
+    "end_date": "2026-10-18",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 190,
+  "fields": {
+    "season": 200,
+    "start_date": "2026-09-19",
+    "end_date": "2026-10-23",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 191,
+  "fields": {
+    "season": 201,
+    "start_date": "2026-10-24",
+    "end_date": "2026-11-06",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 192,
+  "fields": {
+    "season": 202,
+    "start_date": "2026-11-07",
+    "end_date": "2027-01-03",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 193,
+  "fields": {
+    "season": 203,
+    "start_date": "2026-10-24",
+    "end_date": "2026-11-25",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 194,
+  "fields": {
+    "season": 204,
+    "start_date": "2026-10-24",
+    "end_date": "2026-11-25",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 195,
+  "fields": {
+    "season": 204,
+    "start_date": "2026-11-30",
+    "end_date": "2026-12-04",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 196,
+  "fields": {
+    "season": 205,
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-11",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 197,
+  "fields": {
+    "season": 206,
+    "start_date": "2026-11-26",
+    "end_date": "2026-11-29",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 198,
+  "fields": {
+    "season": 206,
+    "start_date": "2026-12-12",
+    "end_date": "2027-01-17",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 199,
+  "fields": {
+    "season": 207,
+    "start_date": "2027-03-12",
+    "end_date": "2027-03-15",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 200,
+  "fields": {
+    "season": 208,
+    "start_date": "2027-03-20",
+    "end_date": "2027-04-25",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 201,
+  "fields": {
+    "season": 209,
+    "start_date": "2027-02-26",
+    "end_date": "2027-03-01",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.seasonperiod",
+  "pk": 202,
+  "fields": {
+    "season": 210,
+    "start_date": "2027-03-06",
+    "end_date": "2027-04-11",
+    "notes": ""
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 1,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "",
+    "limit_type": "DAILY",
+    "harvest_category": null,
+    "limit": 2,
+    "is_unlimited": false,
+    "conditions": "",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 2,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "",
+    "limit_type": "POSSESSION",
+    "harvest_category": null,
+    "limit": 4,
+    "is_unlimited": false,
+    "conditions": "",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 3,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "",
+    "limit_type": "ANNUAL",
+    "harvest_category": null,
+    "limit": 5,
+    "is_unlimited": false,
+    "conditions": "",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 4,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "",
+    "limit_type": "ANNUAL",
+    "harvest_category": 2,
+    "limit": 2,
+    "is_unlimited": false,
+    "conditions": "Maximum antlerless deer within the annual deer bag limit.",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 5,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "zone": 4,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": 12,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "",
+    "limit_type": "ANNUAL",
+    "harvest_category": 2,
+    "limit": 3,
+    "is_unlimited": false,
+    "conditions": "DMU-specific exception to the general annual antlerless limit.",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 6,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "FALL",
+    "limit_type": "DAILY",
+    "harvest_category": 4,
+    "limit": 2,
+    "is_unlimited": false,
+    "conditions": "",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 7,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "FALL",
+    "limit_type": "SEASON",
+    "harvest_category": 4,
+    "limit": 2,
+    "is_unlimited": false,
+    "conditions": "all fall seasons combined",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 8,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "FALL",
+    "limit_type": "POSSESSION",
+    "harvest_category": 4,
+    "limit": 2,
+    "is_unlimited": false,
+    "conditions": "all fall seasons combined",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 9,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "SPRING",
+    "limit_type": "DAILY",
+    "harvest_category": 4,
+    "limit": 2,
+    "is_unlimited": false,
+    "conditions": "",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 10,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "SPRING",
+    "limit_type": "SEASON",
+    "harvest_category": 4,
+    "limit": 2,
+    "is_unlimited": false,
+    "conditions": "all spring seasons",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 11,
+  "fields": {
+    "species": 4,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": null,
+    "season_year": "2026-2027",
+    "season_group": "SPRING",
+    "limit_type": "POSSESSION",
+    "harvest_category": 4,
+    "limit": 2,
+    "is_unlimited": false,
+    "conditions": "all spring seasons",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 12,
+  "fields": {
+    "species": 2,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "season_group": "",
+    "limit_type": "GENERAL",
+    "harvest_category": 3,
+    "limit": null,
+    "is_unlimited": true,
+    "conditions": "No size or bag limit.",
+    "source": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 13,
+  "fields": {
+    "species": 1,
+    "land_type": 1,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "season_group": "",
+    "limit_type": "GENERAL",
+    "harvest_category": null,
+    "limit": null,
+    "is_unlimited": true,
+    "conditions": "",
+    "source": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.baglimitrule",
+  "pk": 14,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "zone": null,
+    "regulatory_area": null,
+    "managed_area": null,
+    "dmu": null,
+    "season_type": 14,
+    "season_year": "2026-2027",
+    "season_group": "",
+    "limit_type": "GENERAL",
+    "harvest_category": null,
+    "limit": null,
+    "is_unlimited": true,
+    "conditions": "Area-specific rules also apply.",
+    "source": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.regulationnote",
+  "pk": 1,
+  "fields": {
+    "species": 3,
+    "land_type": 1,
+    "season_year": "2026-2027",
+    "title": "Bag Limit Exceptions",
+    "text": "Deer taken on private lands under the Antlerless Deer Permit Program (antlerless deer only), Private Lands Deer Management Permit Program and Deer Depredation Permit Program and on licensed game farms and hunting preserves are excluded from bag (daily and annual) and possession limits. Any deer testing positive for CWD also is excluded from all bag limits.",
+    "source": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.regulationnote",
+  "pk": 2,
+  "fields": {
+    "species": 2,
+    "land_type": 1,
+    "season_year": "2026-2027",
+    "title": "Private Land Wild Hog Regulations",
+    "text": "Wild hogs may be trapped and hunted year-round with landowner permission. A hunting license is not required, and a permit is not required to take wild hogs at night with a gun and light with landowner permission. Hunters may use dogs and any legal rifle, shotgun, crossbow, bow, pistol or air gun (including airbow). There is no size or bag limit, and either sex may be harvested. Wild hogs may be trapped using live traps (e.g., box traps, cage traps, corral traps). Trapped animals may not be released on public lands and may only be released on private property with landowner permission. Persons wishing to transport or hold live wild hogs must first obtain applicable permits from the Florida Department of Agriculture and Consumer Services (FDACS) . When hunting wild hogs using dogs, all dogs must wear a collar or tag that legibly displays the dog owner’s name and address. Written permission from the landowner (or lessee) is required, must be in each hunter’s possession, and must be presented for inspection upon request of any FWC wildlife officer or other law enforcement officer. In addition, all dogs not under physical restraint used for pursuing wild hog must be equipped and monitored with devices that allow remote tracking and behavior correction.",
+    "source": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.regulationnote",
+  "pk": 3,
+  "fields": {
+    "species": 2,
+    "land_type": null,
+    "season_year": "2026-2027",
+    "title": "WMA-Specific Wild Hog Regulations",
+    "text": "Expand All | Collapse All When wild hogs may be hunted on WMAs Expand/Collapse When wild hogs may be hunted on WMAs On most wildlife management areas (WMAs), wild hog hunting is allowed during most seasons, except spring turkey season. A hunting license is never required, but a management area permit is usually required, and a quota or daily quota permit may be required (see the area-specific WMA regulations for details). People may hunt wild hogs only during established seasons and in accordance with regulations outlined in the area-specific WMA regulations . Wild hog hunting is not allowed year-round on WMAs, except on the Kissimmee Chain of Lakes Area and the  Rolling Meadows Unit - Kissimmee Chain of Lakes Area. Wild hogs may be hunted during small-game seasons on most WMAs. Allowed methods of take for hunting wild hogs on WMAs Expand/Collapse Allowed methods of take for hunting wild hogs on WMAs During archery season, hunters may only use a bow. During muzzleloading gun season, they may only use a muzzleloading gun. During small-game season, the use of centerfire rifles is prohibited on many WMAs. However, shotguns (including the use of slugs/buckshot), rimfire rifles (including .22-magnum), revolvers, pistols, muzzleloading guns, bows, crossbows and air guns (including airbows) are usually allowed – check the area-specific WMA regulations for details. Area-specific regulations apply when hunting on WMAs, which may include restrictions on the types of allowed guns and firearms, and the use of dogs. On WMAs that allow the use of dogs to hunt wild hogs, all dogs must wear a collar or tag that legibly displays the name and address of the dog's owner. In addition, all dogs not under physical restraint used for pursuing wild hog must be equipped and monitored with devices that allow remote tracking. On July 1, 2022, such dogs must also be equipped with devices that allow for remote behavior correction. Bag limits for wild hogs on WMAs Expand/Collapse Bag limits for wild hogs on WMAs On most WMAs, there are no bag or size limits on wild hogs. However, on some WMAs, daily bag limits do apply; and on a few WMAs, there's even a minimum size limit on wild hogs. Hunters should always read the regulations brochure for the WMA they wish to hunt before going. Brochures are available online only at MyFWC.com/WMAbrochures . Best hog hunting WMAs Expand/Collapse Best hog hunting WMAs Northwest Region - Aucilla, Blackwater Hutton Unit, portions of Blackwater, Apalachicola Bradwell Unit, Choctawhatchee River, portions of Joe Budd, Apalachicola River, Box – R, Escambia River, Lafayette Creek, and Tate’s Hell PSGHA North Central Region - Andrews, Flying Eagle, Big Bend Hickory Mound Unit, Big Bend Snipe Island Unit, Big Bend Tide Swamp Unit, Goethe, Mallory Swamp, Steinhatchee Springs and Devil's Hammock Northeast Region - William Beardall Tosohatchee is the best hog area where hunters get to use dogs.  In terms of sheer numbers of hogs taken, Three Lakes typically is tops, followed by Tosohatchee, Triple N Ranch, Guana River, Bull Creek, Three Lakes Prairie Lakes Unit and Fort Drum. Southwest Region - Green Swamp has the largest harvest each year, followed by Green Swamp West, Babcock/Webb, Chassahowitzka and Myakka State Forest. South Region - Dinner Island Ranch, J.W. Corbett, Dupuis, Fisheating Creek, Okaloacoochee Slough, Allapattah Flats and Hungryland",
+    "source": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.regulationnote",
+  "pk": 4,
+  "fields": {
+    "species": 1,
+    "land_type": 1,
+    "season_year": "2026-2027",
+    "title": "Private Land Burmese Python Regulations",
+    "text": "Hunting on Private Land: Nonnative reptiles like Burmese pythons can be humanely killed on private lands at any time with landowner permission - no permit required- and the FWC encourages people to capture and humanely kill pythons from private lands whenever possible. There is no bag limit.",
+    "source": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "regulations.regulationnote",
+  "pk": 5,
+  "fields": {
+    "species": 1,
+    "land_type": 3,
+    "season_year": "2026-2027",
+    "title": "Commission-Managed Land Burmese Python Regulations",
+    "text": "Hunting on Commission-managed lands: P er Executive Order 23-16, nonnative reptiles including pythons may also be humanely killed at any time throughout the year on 32 Commission-managed lands listed below. All specific provisions in Executive Order 23-16 and all area rules and  must be followed. No permit or hunting license is required. There is no bag limit.",
+    "source": 3,
+    "is_active": true
+  }
+}
+]

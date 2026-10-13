@@ -1,0 +1,63 @@
+<div class="view-container" style="padding: 16px;">
+  <div style="margin-bottom: 24px;">
+    <h1 style="color: white; margin: 0; font-size: 2.2rem;">Licenses</h1>
+    <p>Keep your own license and permit statuses here. These records are self-reported, are not proof of a valid license, and are not verified with FWC.</p>
+  </div>
+  <p *ngIf="loading()" role="status">Loading your licenses…</p>
+  <p *ngIf="error()" role="alert">{{ error() }}</p>
+  <p *ngIf="message()" role="status">{{ message() }}</p>
+  <button *ngIf="!ready && !loading()" type="button" (click)="load()">Retry loading licenses</button>
+  <form *ngIf="ready" class="card query-card" style="padding: 16px; margin-bottom: 24px;" (ngSubmit)="saveLicense()">
+    <h2>{{ editingId === undefined ? 'Add License or Permit Status' : 'Edit License or Permit Status' }}</h2>
+    <div class="input-group" *ngIf="catalog?.license_permits?.length">
+      <label for="license-permit">Official catalog entry (optional)</label>
+      <select id="license-permit" name="permit" [(ngModel)]="form.permit" (ngModelChange)="choosePermit()" class="modern-input" [disabled]="busy()">
+        <option [ngValue]="null">Custom license or permit</option>
+        <option *ngFor="let permit of catalog?.license_permits" [ngValue]="permit.id">{{ permit.name }}</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="license-name">License or permit name</label>
+      <input id="license-name" name="name" class="modern-input" maxlength="150" required [(ngModel)]="form.name" [disabled]="busy()">
+    </div>
+    <div class="input-group">
+      <label for="license-status">Your license status</label>
+      <select id="license-status" name="status" class="modern-input" [(ngModel)]="form.status" [disabled]="busy()">
+        <option *ngFor="let status of statuses" [value]="status.value">{{ status.label }}</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="license-valid">Valid from (optional)</label>
+      <input id="license-valid" type="date" name="validFrom" class="modern-input" [(ngModel)]="form.valid_from" [disabled]="busy()">
+    </div>
+    <div class="input-group">
+      <label for="license-expires">Expires on (optional)</label>
+      <input id="license-expires" type="date" name="expires" class="modern-input" [(ngModel)]="form.expires_on" [min]="form.valid_from || ''" [disabled]="busy()">
+    </div>
+    <div class="input-group">
+      <label for="license-notes">Notes (optional)</label>
+      <textarea id="license-notes" name="notes" class="modern-input" rows="3" maxlength="5000" [(ngModel)]="form.notes" [disabled]="busy()"></textarea>
+    </div>
+    <button type="submit" class="cta-button" [disabled]="busy() || !form.name.trim()">{{ busy() ? 'Saving…' : 'Save License Status' }}</button>
+    <button *ngIf="editingId !== undefined" type="button" (click)="cancelEdit()" [disabled]="busy()">Cancel edit</button>
+  </form>
+
+  <h2 style="color: white; font-size: 1.4rem; margin-bottom: 16px;">My Digital Wallet</h2>
+  <p *ngIf="ready && !myLicenses().length">No license statuses saved yet.</p>
+  <div class="license-card" *ngFor="let lic of myLicenses()">
+    <div class="card-header"><h3>{{ lic.name }}</h3><span class="status-badge">{{ statusLabel(lic.status) }}</span></div>
+    <div class="card-body">
+      <p><strong>Valid from:</strong> {{ lic.valid_from || 'Not recorded' }}</p>
+      <p><strong>Expires:</strong> {{ lic.expires_on || 'Not recorded' }}</p>
+      <p *ngIf="lic.notes">{{ lic.notes }}</p>
+    </div>
+    <button type="button" (click)="editLicense(lic)" [disabled]="busy()" [attr.aria-label]="'Edit ' + lic.name">Edit</button>
+    <button type="button" (click)="deleteLicense(lic)" [disabled]="busy()" [attr.aria-label]="'Delete ' + lic.name">Delete</button>
+  </div>
+  <h2 style="color: white; font-size: 1.4rem; margin-top: 32px; margin-bottom: 16px;">Purchase / Renew</h2>
+  <section class="card query-card" style="padding: 16px;">
+    <a *ngFor="let link of buyLinks" [href]="link.url" target="_blank" rel="noopener noreferrer" class="buy-link">
+      <span>{{ link.name }}</span><span style="color: #F97316;">↗</span>
+    </a>
+  </section>
+</div>

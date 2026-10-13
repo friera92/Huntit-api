@@ -1,0 +1,11 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% block submit_buttons_bottom %}
+  {{ block.super }}
+  {% if can_publish %}
+  <div class="submit-row">
+    <input type="submit" value="Publish reviewed revision" name="_publish">
+    <p>Review every linked source and complete the acknowledgement and notes first. Draft imports never publish automatically.</p>
+  </div>
+  {% endif %}
+{% endblock %}

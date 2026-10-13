@@ -1,0 +1,8 @@
+.account-card { margin: 20px; padding: 24px; background: rgba(24, 28, 24, .95); border-radius: 16px; color: #f1f5f2; }
+h1, a { color: #f97316; }
+form { display: flex; flex-direction: column; gap: 12px; }
+input { padding: 12px; border: 1px solid #728477; border-radius: 8px; color: white; background: #121a14; width: 100%; }
+button { padding: 14px; border: 0; border-radius: 8px; background: #f97316; color: white; font-weight: bold; cursor: pointer; }
+button:disabled { opacity: .55; cursor: default; }
+.error { color: #ffd1c2; }
+.hint { color: #b8c6bc; font-size: .85rem; margin: 0; }
