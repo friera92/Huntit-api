@@ -1,0 +1,92 @@
+<section class="card query-card">
+  <h2 class="card-title">Check Regulations</h2>
+  <p class="card-subtitle">Select your species, date and hunting territory</p>
+  <p *ngIf="loading()" role="status">Loading species and territories…</p>
+  <p *ngIf="error()" role="alert">{{ error() }}</p>
+  <p *ngIf="preferenceNotice()" role="status">{{ preferenceNotice() }}</p>
+  <button *ngIf="!loading() && !catalog()" type="button" class="segment-btn" (click)="loadCatalog()">Retry</button>
+
+  <div class="input-group">
+    <label for="speciesButton">Target Species</label>
+    <button #speciesButton id="speciesButton" type="button" class="select-field custom-select-btn" (click)="openModal()" [disabled]="loading() || !catalog()" aria-haspopup="dialog" [attr.aria-expanded]="isModalOpen" aria-controls="speciesDialog">
+      <ng-container *ngIf="selectedSpecies; else placeholder">
+        <div class="selected-species-display">
+          <span style="font-size: 1.1rem; font-weight: 600; color: white;">{{ selectedSpecies.name }}</span>
+        </div>
+      </ng-container>
+      <ng-template #placeholder><span style="color: #888;">Select game or invasive species...</span></ng-template>
+    </button>
+  </div>
+
+  <div class="input-group">
+    <label>Land Classification</label>
+    <div class="segmented-control">
+      <button *ngFor="let land of catalog()?.land_types" type="button" class="segment-btn" [class.active]="landType === '' + land.id" (click)="setLandType(land.id)">{{ land.name }}</button>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label for="huntingDate">Hunting Date</label>
+    <input id="huntingDate" type="date" class="select-field" [(ngModel)]="huntingDate" required>
+    <p *ngIf="!huntingDate" role="status">Select a hunting date before searching.</p>
+  </div>
+
+  <ng-container *ngIf="catalog() as options">
+    <div class="input-group" *ngIf="selectedLandType?.requires_managed_area">
+      <label for="managedArea">Public Managed Area</label>
+      <select id="managedArea" class="select-field" [(ngModel)]="managedArea" (ngModelChange)="regulatoryArea = ''">
+        <option value="">Select an area…</option>
+        <option *ngFor="let area of options.managed_areas" [value]="area.id">{{ area.name }} ({{ area.area_type }})</option>
+      </select>
+    </div>
+    <div class="input-group" *ngIf="options.zones.length">
+      <label for="zone">Hunting Zone (when applicable)</label>
+      <select id="zone" class="select-field" [(ngModel)]="zone" (ngModelChange)="dmu = ''">
+        <option value="">Select if applicable…</option>
+        <option *ngFor="let item of options.zones" [value]="item.id">{{ item.code }} — {{ item.name }}</option>
+      </select>
+    </div>
+    <div class="input-group" *ngIf="filteredDMUs.length">
+      <label for="dmu">Deer Management Unit (when applicable)</label>
+      <select id="dmu" class="select-field" [(ngModel)]="dmu">
+        <option value="">Select if applicable…</option>
+        <option *ngFor="let item of filteredDMUs" [value]="item.id">{{ item.code }}</option>
+      </select>
+    </div>
+    <div class="input-group" *ngIf="filteredRegulatoryAreas.length">
+      <label for="regulatoryArea">Regulatory Area (when applicable)</label>
+      <select id="regulatoryArea" class="select-field" [(ngModel)]="regulatoryArea">
+        <option value="">Select if applicable…</option>
+        <option *ngFor="let item of filteredRegulatoryAreas" [value]="item.id">{{ item.name || item.code }}</option>
+      </select>
+    </div>
+    <label *ngIf="selectedLandType?.is_private">
+      <input type="checkbox" [(ngModel)]="landownerPermission"> I have the landowner's permission.
+    </label>
+  </ng-container>
+  <p class="card-subtitle">Some species require a zone, management unit or regulatory area. The search will ask for missing details.</p>
+  <details *ngIf="supportedScopes.length">
+    <summary>Available coverage for these selections</summary>
+    <p *ngFor="let scope of supportedScopes">{{ scope.title }} · {{ scope.coverage.start_date }} to {{ scope.coverage.end_date }} · {{ scope.reviewed ? 'Reviewed' : 'Awaiting administrator review' }}<br *ngIf="scopeAreaNames(scope)">{{ scopeAreaNames(scope) }}</p>
+  </details>
+  <p *ngIf="unsupportedManagedArea" role="status">This species and managed area do not have coverage in the current dataset. A search will show missing coverage rather than a hunting authorization.</p>
+  <button class="cta-button" (click)="checkRegulations()" [disabled]="!selectedSpecies || !landType || !huntingDate || loading()" [class.disabled]="!selectedSpecies || !landType || !huntingDate || loading()">Check Regulations</button>
+</section>
+
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()"></div>
+<div id="speciesDialog" class="bottom-sheet" [class.open]="isModalOpen" [attr.inert]="isModalOpen ? null : ''" role="dialog" aria-modal="true" aria-labelledby="speciesDialogTitle" (keydown)="selectorKeydown($event)">
+  <div class="sheet-header">
+    <h3 id="speciesDialogTitle">Select Species</h3>
+    <button type="button" class="close-sheet-btn" (click)="closeModal()" aria-label="Close species selector">✕</button>
+  </div>
+  <div class="sheet-search">
+    <input #speciesSearch type="text" [(ngModel)]="searchQuery" placeholder="Search by name..." class="search-input" aria-label="Search species">
+  </div>
+  <div class="sheet-list">
+    <button type="button" class="species-list-item" *ngFor="let s of filteredSpecies" (click)="selectSpecies(s)">
+      <img *ngIf="s.image" [src]="s.image" [alt]="s.name" class="list-avatar">
+      <div class="list-text"><span class="list-name">{{ s.name }}</span><span class="list-scientific">{{ s.scientific }}</span></div>
+    </button>
+    <div class="empty-state" *ngIf="filteredSpecies.length === 0">No species found matching "{{ searchQuery }}"</div>
+  </div>
+</div>

@@ -1,0 +1,192 @@
+<div class="view-container" style="padding: 1rem;">
+  <a routerLink="/" [queryParams]="searchParams()" class="back-link">← Back to Search</a>
+  <section *ngIf="searchParams() && catalog() as options" class="card query-card regulations-card">
+    <h3 class="card-title">Change Search</h3>
+    <p>Changing these filters refreshes the results below.</p>
+    <div class="input-group">
+      <label for="result-land">Land Classification</label>
+      <select id="result-land" class="modern-input" [(ngModel)]="filters.land_type" (ngModelChange)="changeLandType()">
+        <option *ngFor="let land of options.land_types" [value]="'' + land.id">{{ land.name }}</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="result-date">Hunting Date</label>
+      <input id="result-date" class="modern-input" type="date" [(ngModel)]="filters.date" (change)="updateFilters()">
+    </div>
+    <div class="input-group" *ngIf="selectedLandType?.requires_managed_area">
+      <label for="result-area">Public Managed Area</label>
+      <select id="result-area" class="modern-input" [(ngModel)]="filters.managed_area" (ngModelChange)="changeArea()">
+        <option value="">Select an area…</option>
+        <option *ngFor="let area of options.managed_areas" [value]="'' + area.id">{{ area.name }}</option>
+      </select>
+    </div>
+    <div class="input-group" *ngIf="options.zones.length">
+      <label for="result-zone">Hunting Zone (when applicable)</label>
+      <select id="result-zone" class="modern-input" [(ngModel)]="filters.zone" (ngModelChange)="changeZone()">
+        <option value="">Select if applicable…</option>
+        <option *ngFor="let zone of options.zones" [value]="'' + zone.id">{{ zone.code }} — {{ zone.name }}</option>
+      </select>
+    </div>
+    <div class="input-group" *ngIf="filteredDMUs.length">
+      <label for="result-dmu">Deer Management Unit (when applicable)</label>
+      <select id="result-dmu" class="modern-input" [(ngModel)]="filters.dmu" (ngModelChange)="updateFilters()">
+        <option value="">Select if applicable…</option>
+        <option *ngFor="let dmu of filteredDMUs" [value]="'' + dmu.id">{{ dmu.code }}</option>
+      </select>
+    </div>
+    <div class="input-group" *ngIf="filteredRegulatoryAreas.length">
+      <label for="result-regulatory-area">Regulatory Area (when applicable)</label>
+      <select id="result-regulatory-area" class="modern-input" [(ngModel)]="filters.regulatory_area" (ngModelChange)="updateFilters()">
+        <option value="">Select if applicable…</option>
+        <option *ngFor="let area of filteredRegulatoryAreas" [value]="'' + area.id">{{ area.name || area.code }}</option>
+      </select>
+    </div>
+    <label *ngIf="selectedLandType?.is_private" for="result-permission">
+      <input id="result-permission" type="checkbox" [ngModel]="filters.landowner_permission === 'true'" (ngModelChange)="filters.landowner_permission = $event ? 'true' : 'false'; updateFilters()"> I have the landowner's permission.
+    </label>
+  </section>
+  <div *ngIf="catalogError()"><p role="alert">{{ catalogError() }}</p><button type="button" (click)="loadCatalog()">Retry search options</button></div>
+  <p *ngIf="loading()" role="status">Loading regulations…</p>
+  <p *ngIf="error()" role="alert">{{ error() }}</p>
+
+  <ng-container *ngIf="activeResult() as result">
+    <div class="species-header">
+      <h1>{{ result.name }}</h1>
+      <h2 class="scientific-name">{{ result.scientific }}</h2>
+      <div class="species-image-container" *ngIf="result.image">
+        <img [src]="result.image" [alt]="result.name" class="results-image">
+      </div>
+      <p *ngIf="result.about" class="description">{{ result.species_information_reviewed ? 'Reviewed species background' : 'General species background — not source-reviewed regulations.' }}</p>
+      <p class="description" style="white-space: pre-line;">{{ result.about }}</p>
+      <p *ngIf="result.species_information_reviewed && result.species_information_verified_at" class="description">Species information verified: {{ result.species_information_verified_at | date:'mediumDate':'UTC' }}</p>
+    </div>
+
+    <section *ngIf="selectedLandType?.requires_managed_area && selectedManagedArea as area" class="card query-card regulations-card">
+      <h3 class="card-title">Area Maps and Access</h3>
+      <p>{{ area.name }}<span *ngIf="area.county"> · {{ area.county }}</span></p>
+      <p *ngIf="sourceUrl(area.brochure_url || '') as brochure"><a [href]="brochure" target="_blank" rel="noopener noreferrer" style="color: #f97316;">Official FWC area brochure and map finder</a></p>
+      <p *ngIf="sourceUrl(area.map_url || '') as map"><a [href]="map" target="_blank" rel="noopener noreferrer" style="color: #f97316;">FWC area and map directory</a></p>
+      <p><a href="https://myfwc.com/recreation/notices/" target="_blank" rel="noopener noreferrer" style="color: #f97316;">Current FWC closures and access notices</a></p>
+      <p>Check the area brochure, map and current notices before visiting. A listed area does not establish an open hunting season.</p>
+    </section>
+
+    <div class="alerts-section">
+      <h3>{{ result.landType }} · {{ searchParams()?.date }}</h3>
+      <div class="alert-box" role="status">
+        {{ resultStatus(result) }}
+      </div>
+      <div *ngIf="result.eligibility === 'permission_required'" class="alert-box" role="status">Landowner permission is required for this search. Update the permission selection only if you have it.</div>
+      <p *ngFor="let range of result.coverage">Record coverage: {{ range.start_date }} through {{ range.end_date }}</p>
+      <div class="alert-box" *ngFor="let alert of result.alerts">⚠️ {{ alert }}</div>
+    </div>
+
+    <section class="card query-card regulations-card">
+      <h3 class="card-title">Regulations</h3>
+      <ul class="regulations-list">
+        <li><span class="reg-label">OPEN SEASONS:</span><span class="reg-value" style="white-space: pre-line;">{{ result.dates }}</span></li>
+        <li><span class="reg-label">BAG & SIZE LIMITS:</span><span class="reg-value" style="white-space: pre-line;">{{ result.bag }}</span></li>
+        <li><span class="reg-label">LICENSE REQUIREMENTS:</span><span class="reg-value" style="white-space: pre-line;">{{ result.licenses }}</span></li>
+        <li><span class="reg-label">AUTHORIZED METHODS & GEAR:</span><span class="reg-value" style="white-space: pre-line;">{{ result.methods }}</span></li>
+      </ul>
+    </section>
+
+    <ng-container *ngIf="result.additional_records as additional">
+      <section *ngIf="additionalRecordCount(additional)" class="card query-card regulations-card">
+        <h3 class="card-title">Additional Verified Project Records</h3>
+        <p>Matching information from the existing project is included below with its recorded dates, scope and conditions. Read it together with the regulations above.</p>
+        <p>Verification confirmed: {{ additional.verified_at | date:'mediumDate':'UTC' }}</p>
+        <p *ngIf="additional.verification_basis">Verification confirmed by the project owner.</p>
+
+        <h4 *ngIf="additional.seasons.length">Season Records</h4>
+        <article *ngFor="let season of additional.seasons" class="info-card" style="margin-bottom: 16px;">
+          <h4>{{ season.name }} · {{ season.season_year || 'Season year not recorded' }}</h4>
+          <p *ngIf="season.code">Season code: {{ season.code }}</p>
+          <p>Record scope: {{ season.scope }}</p>
+          <p>Category: {{ season.category || 'Not recorded' }}</p>
+          <p>{{ season.matches_date ? 'Matches the selected date according to this record.' : 'The selected date is outside this record’s periods.' }}</p>
+          <p *ngIf="season.year_round && !season.periods.length">Recorded as year-round for {{ season.season_year || 'an unspecified season year' }}. Explicit start and end dates were not supplied.</p>
+          <p *ngIf="!season.year_round && !season.periods.length">No explicit date periods were recorded.</p>
+          <p *ngFor="let period of season.periods">{{ period.start_date }} through {{ period.end_date }}<span *ngIf="period.notes"> · {{ period.notes }}</span></p>
+          <p style="white-space: pre-line;"><strong>Bag limits:</strong> {{ season.bag || 'Not recorded.' }}</p>
+          <p style="white-space: pre-line;"><strong>Licenses and permits:</strong> {{ season.licenses || 'Not recorded.' }}</p>
+          <p style="white-space: pre-line;"><strong>Methods and gear:</strong> {{ season.methods || 'Not recorded.' }}</p>
+          <p *ngIf="season.notes" style="white-space: pre-line;">{{ season.notes }}</p>
+          <ng-container *ngTemplateOutlet="recordSource; context: { $implicit: season.source }"></ng-container>
+        </article>
+
+        <h4 *ngIf="additional.bag_rules.length">Bag-Limit Records</h4>
+        <article *ngFor="let rule of additional.bag_rules" class="info-card" style="margin-bottom: 16px;">
+          <h4>{{ limitTypeLabel(rule.limit_type) }} · {{ rule.season_year || 'Season year not recorded' }}</h4>
+          <p>Record scope: {{ rule.scope }}</p>
+          <p>Category: {{ rule.category || 'Not recorded' }}</p>
+          <p>Limit: {{ rule.is_unlimited ? 'Unlimited (as recorded)' : (rule.limit === null ? 'Not recorded' : rule.limit) }}</p>
+          <p *ngIf="rule.conditions" style="white-space: pre-line;">{{ rule.conditions }}</p>
+          <ng-container *ngTemplateOutlet="recordSource; context: { $implicit: rule.source }"></ng-container>
+        </article>
+
+        <h4 *ngIf="additional.notes.length">Regulatory Notes</h4>
+        <article *ngFor="let note of additional.notes" class="info-card" style="margin-bottom: 16px;">
+          <h4>{{ note.title || 'Regulatory note' }}</h4>
+          <p>Record scope: {{ note.scope }}</p>
+          <p>Season year: {{ note.season_year || 'Not recorded' }}</p>
+          <p style="white-space: pre-line;">{{ note.text }}</p>
+          <ng-container *ngTemplateOutlet="recordSource; context: { $implicit: note.source }"></ng-container>
+        </article>
+      </section>
+    </ng-container>
+
+    <ng-template #recordSource let-source>
+      <ng-container *ngIf="source; else missingRecordSource">
+      <p><strong>Source:</strong> <a *ngIf="sourceUrl(source.url); else additionalSourceTitle" [href]="sourceUrl(source.url)" target="_blank" rel="noopener noreferrer" style="color: #f97316;">{{ source.title || source.url }}</a><ng-template #additionalSourceTitle>{{ source.title || 'Not recorded' }}</ng-template></p>
+      <p *ngIf="source.organization">Organization: {{ source.organization }}</p>
+      <p *ngIf="source.document_type">Document type: {{ source.document_type }}</p>
+      <p *ngIf="source.effective_date">Source effective date: {{ source.effective_date }}</p>
+      <p>Retrieved: {{ source.retrieved_at ? (source.retrieved_at | date:'mediumDate':'UTC') : 'Not recorded' }}</p>
+      <p>Original source verification date: {{ source.original_last_verified_at ? (source.original_last_verified_at | date:'mediumDate':'UTC') : 'Not recorded' }}</p>
+      <p>Verification confirmed: {{ source.last_verified_at ? (source.last_verified_at | date:'mediumDate':'UTC') : 'Not recorded' }}</p>
+      <p *ngIf="source.source_checked_on">Source checked: {{ source.source_checked_on }}</p>
+      <p *ngIf="source.evidence" style="white-space: pre-line;">{{ source.evidence }}</p>
+      <p *ngIf="source.verification_basis">Verification confirmed by the project owner.</p>
+      <p *ngIf="source.notes" style="white-space: pre-line;">Source notes: {{ source.notes }}</p>
+      </ng-container>
+      <ng-template #missingRecordSource><p>Source reference: Not recorded.</p></ng-template>
+    </ng-template>
+
+    <section class="card query-card regulations-card">
+      <h3 class="card-title">Official Sources</h3>
+      <p *ngIf="!result.sources.length">No source reference was recorded for this result.</p>
+      <div *ngFor="let source of result.sources">
+        <a *ngIf="sourceUrl(source.url); else sourceTitle" [href]="sourceUrl(source.url)" target="_blank" rel="noopener noreferrer" style="color: #f97316;">{{ source.title || source.url }}</a>
+        <ng-template #sourceTitle><span>{{ source.title }}</span></ng-template>
+        <p *ngIf="source.organization">Organization: {{ source.organization }}</p>
+        <p *ngIf="source.document_type">Document type: {{ source.document_type }}</p>
+        <p *ngIf="source.effective_date">Source effective date: {{ source.effective_date }}</p>
+        <p>Retrieved: {{ source.retrieved_at ? (source.retrieved_at | date:'mediumDate':'UTC') : 'Not recorded' }}</p>
+        <p>Last verified: {{ source.last_verified_at ? (source.last_verified_at | date:'mediumDate':'UTC') : 'Not independently verified' }}</p>
+        <p *ngIf="source.original_last_verified_at">Original source verification date: {{ source.original_last_verified_at | date:'mediumDate':'UTC' }}</p>
+        <p *ngIf="source.source_checked_on">Source checked: {{ source.source_checked_on }}</p>
+        <p *ngIf="source.verification_basis">Verification confirmed by the project owner.</p>
+        <p *ngIf="source.evidence" style="white-space: pre-line;">{{ source.evidence }}</p>
+        <p *ngIf="source.notes" style="white-space: pre-line;">Source notes: {{ source.notes }}</p>
+      </div>
+    </section>
+
+    <div class="info-grid">
+      <div class="info-card" *ngIf="result.habitat"><h4>Habitat{{ result.species_information_reviewed ? '' : ' (Unreviewed Background)' }}</h4><p style="white-space: pre-line;">{{ result.habitat }}</p></div>
+      <div class="info-card" *ngIf="result.behavior"><h4>Behavior{{ result.species_information_reviewed ? '' : ' (Unreviewed Background)' }}</h4><p style="white-space: pre-line;">{{ result.behavior }}</p></div>
+      <div class="info-card" *ngIf="result.species_information_reviewed && result.tactics"><h4>How to Hunt</h4><p style="white-space: pre-line;">{{ result.tactics }}</p></div>
+    </div>
+    <section class="card query-card regulations-card">
+      <h3 class="card-title">Save This Search</h3>
+      <p>Save these filters to your account. Opening the saved search requests current records for the saved hunting date.</p>
+      <form *ngIf="user(); else signInToSave" (ngSubmit)="saveSearch()">
+        <label for="save-search-title">Search title</label>
+        <input id="save-search-title" name="title" class="modern-input" [(ngModel)]="searchTitle" maxlength="120" required [disabled]="saving()">
+        <button type="submit" class="cta-button" [disabled]="saving() || !searchTitle.trim()">{{ saving() ? 'Saving…' : 'Save Search' }}</button>
+      </form>
+      <ng-template #signInToSave><a routerLink="/login" [queryParams]="{ returnUrl: router.url }" style="color: #f97316;">Sign in to save this search</a></ng-template>
+      <p *ngIf="saveError()" role="alert">{{ saveError() }}</p>
+      <p *ngIf="saveMessage()" role="status">{{ saveMessage() }}</p>
+    </section>
+  </ng-container>
+</div>

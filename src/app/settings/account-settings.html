@@ -1,0 +1,38 @@
+<section class="account-card">
+  <h1>Account &amp; Data Settings</h1>
+  <p><a routerLink="/profile">Back to Profile</a></p>
+  <h2>Change Password</h2>
+  <form #passwordForm="ngForm" (ngSubmit)="changePassword(passwordForm)">
+    <label for="currentPassword">Current Password</label>
+    <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" [(ngModel)]="currentPassword" required [disabled]="passwordPending()">
+    <label for="newPassword">New Password</label>
+    <input id="newPassword" name="newPassword" type="password" autocomplete="new-password" [(ngModel)]="newPassword" required minlength="8" [disabled]="passwordPending()">
+    <label for="newPasswordConfirm">Confirm New Password</label>
+    <input id="newPasswordConfirm" name="newPasswordConfirm" type="password" autocomplete="new-password" [(ngModel)]="newPasswordConfirm" required minlength="8" [disabled]="passwordPending()">
+    <p class="hint">Use at least 8 characters. Changing your password signs other browser sessions out.</p>
+    <p *ngIf="passwordError()" role="alert" class="error">{{ passwordError() }}</p>
+    <p *ngIf="passwordSuccess()" role="status">{{ passwordSuccess() }}</p>
+    <button type="submit" [disabled]="passwordForm.invalid || passwordPending()">{{ passwordPending() ? 'Changing…' : 'Change Password' }}</button>
+  </form>
+  <h2>Export Saved Information</h2>
+  <p>Download your preferences, self-reported licenses, saved searches, and active and archived harvests. Keep this private file somewhere you trust.</p>
+  <button type="button" (click)="exportData()" [disabled]="dataPending()">Export My Data</button>
+  <h2>Reset Saved Information</h2>
+  <p>Clear outdated trip settings or start a new season. Export first if you want a copy. Harvests are archived here so you can restore them later; permanent removal is available separately in Harvest Log.</p>
+  <form (ngSubmit)="resetData()">
+    <label><input type="checkbox" name="clearPreferences" [(ngModel)]="clearPreferences" [disabled]="dataPending()"> Clear preferred species, areas and zones</label>
+    <label><input type="checkbox" name="clearSavedSearches" [(ngModel)]="clearSavedSearches" [disabled]="dataPending()"> Delete saved searches</label>
+    <label><input type="checkbox" name="clearLicenses" [(ngModel)]="clearLicenses" [disabled]="dataPending()"> Delete self-reported license records</label>
+    <label><input type="checkbox" name="archiveHarvests" [(ngModel)]="archiveHarvests" [disabled]="dataPending()"> Archive all active harvests</label>
+    <label for="resetConfirmation">Type RESET MY DATA to confirm the selected changes</label>
+    <input id="resetConfirmation" name="resetConfirmation" [(ngModel)]="confirmation" autocomplete="off" [disabled]="dataPending()">
+    <button type="submit" [disabled]="!hasSelection || confirmation !== 'RESET MY DATA' || dataPending()">Apply Selected Reset</button>
+  </form>
+  <p *ngIf="dataError()" role="alert" class="error">{{ dataError() }}</p>
+  <p *ngIf="dataSuccess()" role="status">{{ dataSuccess() }}</p>
+  <ng-container *ngIf="auth.currentUser()?.is_staff">
+    <h2>Administrator Tools</h2>
+    <p><a href="/admin/auth/user/">Manage user accounts in Django Admin</a></p>
+    <p>Authorized administrators can reset passwords, suspend accounts by clearing Active, reactivate accounts, and delete accounts with confirmation. Deleting an account also removes its personal records. Superusers control staff permissions; password resets never reveal an existing password.</p>
+  </ng-container>
+</section>

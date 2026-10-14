@@ -1,0 +1,24 @@
+<section class="account-card">
+  <h1>{{ registerMode ? 'Create Account' : 'Log In' }}</h1>
+  <p>Guest regulation searches are available without an account.</p>
+  <form #accountForm="ngForm" (ngSubmit)="submit(accountForm)">
+    <label for="username">Username</label>
+    <input id="username" name="username" [(ngModel)]="username" required maxlength="150" autocomplete="username" [disabled]="pending()">
+    <ng-container *ngIf="registerMode">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" [(ngModel)]="email" required email maxlength="254" autocomplete="email" [disabled]="pending()">
+    </ng-container>
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" [(ngModel)]="password" required [minlength]="registerMode ? 8 : 1" [autocomplete]="registerMode ? 'new-password' : 'current-password'" [disabled]="pending()">
+    <ng-container *ngIf="registerMode">
+      <p class="hint">Use at least 8 characters. Avoid common passwords and your personal information.</p>
+      <label for="passwordConfirm">Confirm Password</label>
+      <input id="passwordConfirm" name="passwordConfirm" type="password" [(ngModel)]="passwordConfirm" required minlength="8" autocomplete="new-password" [disabled]="pending()">
+    </ng-container>
+    <p *ngIf="error()" class="error" role="alert">{{ error() }}</p>
+    <button type="submit" [disabled]="accountForm.invalid || pending()">{{ pending() ? 'Please wait…' : (registerMode ? 'Create Account' : 'Log In') }}</button>
+  </form>
+  <p *ngIf="registerMode">Have an account? <a routerLink="/login" queryParamsHandling="preserve">Log in</a>.</p>
+  <p *ngIf="!registerMode">Need an account? <a routerLink="/register" queryParamsHandling="preserve">Register</a>.</p>
+  <p *ngIf="!registerMode" class="hint">Forgot your password? Contact your project administrator for an account reset.</p>
+</section>

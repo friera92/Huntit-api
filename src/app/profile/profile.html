@@ -1,0 +1,54 @@
+<div class="view-container" style="padding: 1rem; padding-bottom: 100px;">
+  <h2 style="margin-bottom: 1rem;">Hunter Profile</h2>
+  <section class="card" style="margin-bottom: 1.5rem; text-align: center;">
+    <div style="width: 80px; height: 80px; background: #e9ecef; border-radius: 50%; margin: 0 auto 1rem auto; display: flex; align-items: center; justify-content: center; font-size: 2rem;">👤</div>
+    <h3 style="margin: 0;">{{ displayName() }}</h3>
+    <p style="color: #aaa; margin-top: 0.25rem;">{{ user()?.email }}</p>
+    <a routerLink="/licenses" style="color: #f97316;">Manage my license statuses</a>
+  </section>
+  <p *ngIf="loading()" role="status">Loading your saved preferences and searches…</p>
+  <p *ngIf="error()" role="alert">{{ error() }}</p>
+  <p *ngIf="message()" role="status">{{ message() }}</p>
+  <button *ngIf="!ready && !loading()" type="button" (click)="load()">Retry loading profile</button>
+  <form *ngIf="ready" class="card" style="margin-bottom: 1.5rem;" (ngSubmit)="savePreferences()">
+    <h3 style="margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">Saved Preferences</h3>
+    <p>Save the species, managed areas and hunting zones you use most often. These selections help fill your next search and do not replace the hunting rules.</p>
+    <div class="input-group">
+      <label for="preferred-species">Preferred species (choose any)</label>
+      <select id="preferred-species" name="species" multiple [(ngModel)]="preferences.species" [disabled]="saving()" class="modern-input">
+        <option *ngFor="let item of species" [ngValue]="item.id">{{ item.name }}</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="preferred-areas">Preferred managed areas / WMAs (choose any)</label>
+      <select id="preferred-areas" name="areas" multiple [(ngModel)]="preferences.managed_areas" [disabled]="saving()" class="modern-input">
+        <option *ngFor="let area of catalog?.managed_areas" [ngValue]="area.id">{{ area.name }}</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="preferred-zones">Preferred hunting zones (choose any)</label>
+      <select id="preferred-zones" name="zones" multiple [(ngModel)]="preferences.zones" [disabled]="saving()" class="modern-input">
+        <option *ngFor="let zone of catalog?.zones" [ngValue]="zone.id">{{ zone.name || zone.code }}</option>
+      </select>
+    </div>
+    <p>On a computer, hold Ctrl or Command to select or clear multiple options.</p>
+    <button type="submit" class="cta-button" [disabled]="saving()">{{ saving() ? 'Saving…' : 'Save Preferences' }}</button>
+  </form>
+  <section *ngIf="ready" class="card">
+    <h3 style="margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">Saved Searches</h3>
+    <p>Reopening a search checks the latest available records for its saved date and location.</p>
+    <p *ngIf="!savedSearches().length">No searches saved yet. Save one from the results screen.</p>
+    <div *ngFor="let search of savedSearches()" style="padding: 0.75rem 0; border-bottom: 1px solid #555;">
+      <a routerLink="/results" [queryParams]="savedSearchQuery(search)" style="color: #f97316;">{{ search.title }}</a>
+      <p>Hunting date: {{ search.hunting_date }}</p>
+      <form *ngIf="editingSearch === search.id" (ngSubmit)="renameSearch(search)">
+        <label [for]="'search-title-' + search.id">Search title</label>
+        <input [id]="'search-title-' + search.id" name="title" maxlength="120" required [(ngModel)]="searchTitle" [disabled]="busySearch() !== null" class="modern-input">
+        <button type="submit" [disabled]="busySearch() !== null || !searchTitle.trim()">Save title</button>
+        <button type="button" (click)="editingSearch = null" [disabled]="busySearch() !== null">Cancel</button>
+      </form>
+      <button *ngIf="editingSearch !== search.id" type="button" (click)="editSearch(search)" [disabled]="busySearch() !== null" [attr.aria-label]="'Rename ' + search.title">Rename</button>
+      <button type="button" (click)="deleteSearch(search)" [disabled]="busySearch() !== null" [attr.aria-label]="'Delete saved search ' + search.title">Delete</button>
+    </div>
+  </section>
+</div>

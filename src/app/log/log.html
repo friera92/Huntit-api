@@ -1,0 +1,72 @@
+<div class="view-container" style="padding: 16px;">
+  <div style="margin-bottom: 24px;">
+    <h1 style="color: white; margin: 0; font-size: 2.2rem;">Harvest Log</h1>
+    <p>Your entries are saved privately to your account. This personal log does not submit an official harvest report to FWC.</p>
+  </div>
+  <p *ngIf="loading()" role="status">Loading your harvest log…</p>
+  <p *ngIf="error()" role="alert">{{ error() }}</p>
+  <p *ngIf="message()" role="status">{{ message() }}</p>
+  <button *ngIf="!ready && !loading()" type="button" (click)="load()">Retry loading harvests</button>
+  <form *ngIf="ready && !showArchived" class="card query-card" (ngSubmit)="saveHarvest()">
+    <h2 class="card-title">{{ editingId === undefined ? 'Record a Catch' : 'Edit Harvest' }}</h2>
+    <div class="input-group">
+      <label for="harvest-species">Species</label>
+      <select id="harvest-species" name="species" [(ngModel)]="form.species" required class="modern-input" [disabled]="busy()">
+        <option [ngValue]="null">Choose a species…</option>
+        <option *ngFor="let item of species" [ngValue]="item.id">{{ item.name }}</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="harvest-date">Date</label>
+      <input id="harvest-date" type="date" name="date" [(ngModel)]="form.harvest_date" [max]="today" required class="modern-input" [disabled]="busy()">
+    </div>
+    <div class="input-group">
+      <label for="harvest-area">Managed area / WMA (optional)</label>
+      <select id="harvest-area" name="area" [(ngModel)]="form.managed_area" class="modern-input" [disabled]="busy()">
+        <option [ngValue]="null">Other location / private land</option>
+        <option *ngFor="let area of catalog?.managed_areas" [ngValue]="area.id">{{ area.name }}</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="harvest-location">Location {{ form.managed_area ? '(optional details)' : '(required)' }}</label>
+      <input id="harvest-location" type="text" name="location" [(ngModel)]="form.location" [required]="!form.managed_area" maxlength="200" placeholder="e.g. Private lease, Ocala" class="modern-input" [disabled]="busy()">
+    </div>
+    <div class="input-group">
+      <label for="harvest-quantity">Number harvested</label>
+      <input id="harvest-quantity" type="number" name="quantity" [(ngModel)]="form.quantity" min="1" max="1000000" step="1" required class="modern-input" [disabled]="busy()">
+    </div>
+    <div class="input-group">
+      <label for="harvest-notes">Notes (optional)</label>
+      <textarea id="harvest-notes" name="notes" [(ngModel)]="form.notes" maxlength="5000" rows="3" class="modern-input" [disabled]="busy()"></textarea>
+    </div>
+    <button type="submit" class="cta-button" [disabled]="busy() || !form.species || !form.harvest_date || form.quantity < 1 || (!form.managed_area && !form.location.trim())">
+      {{ busy() ? 'Saving…' : 'Save Harvest' }}
+    </button>
+    <button *ngIf="editingId !== undefined" type="button" (click)="cancelEdit()" [disabled]="busy()">Cancel edit</button>
+  </form>
+  <h2 style="color: white; font-size: 1.4rem; margin-bottom: 16px;">{{ showArchived ? 'Archived Harvests' : 'Recent Harvests' }}</h2>
+  <button type="button" (click)="toggleArchive()" [disabled]="loading() || busy()">{{ showArchived ? 'Show active harvests' : 'Show archived harvests' }}</button>
+  <div class="harvest-list">
+    <div class="harvest-card" *ngFor="let harvest of recentHarvests()">
+      <img *ngIf="harvest.species_image" [src]="harvest.species_image" [alt]="harvest.species_name" class="harvest-image">
+      <div class="harvest-details" style="min-width: 0; overflow-wrap: anywhere; padding-right: 60px;">
+        <h3 class="harvest-species">{{ harvest.species_name }} × {{ harvest.quantity }}</h3>
+        <div class="harvest-meta">
+          <span>📍 {{ harvest.managed_area_name }}{{ harvest.managed_area_name && harvest.location ? ' · ' : '' }}{{ harvest.location }}</span>
+          <span>📅 {{ harvest.harvest_date }}</span>
+          <span *ngIf="harvest.notes">{{ harvest.notes }}</span>
+        </div>
+        <button *ngIf="!showArchived" type="button" style="min-height: 44px;" (click)="editHarvest(harvest)" [disabled]="busy()" [attr.aria-label]="'Edit ' + harvest.species_name + ' harvest'">Edit</button>
+        <button *ngIf="showArchived" type="button" style="min-height: 44px;" (click)="archiveHarvest(harvest, true)" [disabled]="busy()" [attr.aria-label]="'Restore ' + harvest.species_name + ' harvest'">Restore</button>
+        <div *ngIf="confirmingDelete === harvest.id" role="group" aria-label="Confirm permanent deletion">
+          <p>This permanently deletes this harvest. It cannot be restored.</p>
+          <button type="button" (click)="deleteHarvest(harvest)" [disabled]="busy()">Permanently delete harvest</button>
+          <button type="button" (click)="confirmingDelete = null" [disabled]="busy()">Keep harvest</button>
+        </div>
+      </div>
+      <button *ngIf="!showArchived" type="button" class="delete-btn" style="width: 44px; height: 44px;" (click)="archiveHarvest(harvest)" [disabled]="busy()" [attr.aria-label]="'Archive ' + harvest.species_name + ' harvest'">↓</button>
+      <button *ngIf="showArchived" type="button" class="delete-btn" style="width: 44px; height: 44px;" (click)="confirmingDelete = harvest.id" [disabled]="busy()" [attr.aria-label]="'Delete ' + harvest.species_name + ' harvest permanently'">✕</button>
+    </div>
+    <p *ngIf="ready && !recentHarvests().length" style="text-align: center; color: #aaa; padding: 20px;">No harvests logged yet.</p>
+  </div>
+</div>
