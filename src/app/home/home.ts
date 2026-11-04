@@ -131,6 +131,7 @@ export class Home implements OnInit {
 
   get filteredSpecies(): Species[] {
     const query = this.searchQuery.toLowerCase();
+    console.log(this.speciesList());
     return this.speciesList().filter(item => item.name.toLowerCase().includes(query) || item.scientific.toLowerCase().includes(query));
   }
 

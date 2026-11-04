@@ -45,7 +45,6 @@
     <button *ngIf="editingId !== undefined" type="button" (click)="cancelEdit()" [disabled]="busy()">Cancel edit</button>
   </form>
   <h2 style="color: white; font-size: 1.4rem; margin-bottom: 16px;">{{ showArchived ? 'Archived Harvests' : 'Recent Harvests' }}</h2>
-  <button type="button" (click)="toggleArchive()" [disabled]="loading() || busy()">{{ showArchived ? 'Show active harvests' : 'Show archived harvests' }}</button>
   <div class="harvest-list">
     <div class="harvest-card" *ngFor="let harvest of recentHarvests()">
       <img *ngIf="harvest.species_image" [src]="harvest.species_image" [alt]="harvest.species_name" class="harvest-image">
@@ -56,12 +55,12 @@
           <span>📅 {{ harvest.harvest_date }}</span>
           <span *ngIf="harvest.notes">{{ harvest.notes }}</span>
         </div>
-        <button *ngIf="!showArchived" type="button" style="min-height: 44px;" (click)="editHarvest(harvest)" [disabled]="busy()" [attr.aria-label]="'Edit ' + harvest.species_name + ' harvest'">Edit</button>
-        <button *ngIf="showArchived" type="button" style="min-height: 44px;" (click)="archiveHarvest(harvest, true)" [disabled]="busy()" [attr.aria-label]="'Restore ' + harvest.species_name + ' harvest'">Restore</button>
+        <button *ngIf="!showArchived" class="cta-button" type="button" style="min-height: 44px;" (click)="editHarvest(harvest)" [disabled]="busy()" [attr.aria-label]="'Edit ' + harvest.species_name + ' harvest'">Edit</button>
+        <button *ngIf="showArchived" class="cta-button" type="button" style="min-height: 44px;" (click)="archiveHarvest(harvest, true)" [disabled]="busy()" [attr.aria-label]="'Restore ' + harvest.species_name + ' harvest'">Restore</button>
         <div *ngIf="confirmingDelete === harvest.id" role="group" aria-label="Confirm permanent deletion">
           <p>This permanently deletes this harvest. It cannot be restored.</p>
-          <button type="button" (click)="deleteHarvest(harvest)" [disabled]="busy()">Permanently delete harvest</button>
-          <button type="button" (click)="confirmingDelete = null" [disabled]="busy()">Keep harvest</button>
+          <button class="cta-button" type="button" (click)="deleteHarvest(harvest)" [disabled]="busy()">Permanently delete harvest</button>
+          <button class="cta-button" type="button" (click)="confirmingDelete = null" [disabled]="busy()">Keep harvest</button>
         </div>
       </div>
       <button *ngIf="!showArchived" type="button" class="delete-btn" style="width: 44px; height: 44px;" (click)="archiveHarvest(harvest)" [disabled]="busy()" [attr.aria-label]="'Archive ' + harvest.species_name + ' harvest'">↓</button>
@@ -69,4 +68,5 @@
     </div>
     <p *ngIf="ready && !recentHarvests().length" style="text-align: center; color: #aaa; padding: 20px;">No harvests logged yet.</p>
   </div>
+  <button type="button" class="cta-button" (click)="toggleArchive()" [disabled]="loading() || busy()">{{ showArchived ? 'Show active harvests' : 'Show archived harvests' }}</button>
 </div>

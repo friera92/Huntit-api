@@ -44,8 +44,9 @@ def species_data(species, snapshot=None, *, publications=()):
     if not image:
         name = data["common_name"].casefold()
         image = next((path for word, path in [
-            ("hog", "/hog.png"), ("python", "/python.png"), ("deer", "/deer.png"),
+            ("hog", "/hog.png"), ("python", "/python.png"), ("deer", "/deer.png"), ("turkey", "/wildturkey.png")
         ] if word in name), "")
+        print(image)
     return {
         "id": species.pk, "name": data["common_name"], "scientific": data["scientific_name"],
         "image": image, "about": data["description"], "habitat": data["habitat"], "behavior": data["behavior"],
