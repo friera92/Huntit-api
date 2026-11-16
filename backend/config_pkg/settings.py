@@ -168,7 +168,7 @@ CSRF_COOKIE_SECURE = not DEBUG or LOCAL_HTTPS
 SECURE_SSL_REDIRECT = not DEBUG
 SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_REFERRER_POLICY = "no-referrer"
+SECURE_REFERRER_POLICY = "same-origin"
 # Only enable behind the loopback launcher proxy or an explicitly trusted deployment proxy.
 if LOCAL_HTTPS or os.environ.get("DJANGO_TRUST_PROXY_SSL", "false").lower() == "true":
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

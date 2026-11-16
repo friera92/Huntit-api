@@ -32,5 +32,6 @@ class PrivateResponseMiddleware:
         if request.path.startswith(("/api/auth/", "/api/personal/", "/admin/")):
             response["Cache-Control"] = "private, no-store"
             patch_vary_headers(response, ("Cookie",))
-        response["Referrer-Policy"] = "no-referrer"
+        # Django's HTML admin forms need same-origin referrers for CSRF checks.
+        response["Referrer-Policy"] = "same-origin" if request.path.startswith("/admin/") else "no-referrer"
         return response
